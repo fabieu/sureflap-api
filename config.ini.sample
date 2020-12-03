@@ -1,0 +1,6 @@
+[api]
+endpoint = "https://app.api.surehub.io"
+
+[user]
+email = "SureFlapEmail"
+password = "SureFlapPassword"
