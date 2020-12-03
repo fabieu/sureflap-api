@@ -1,10 +1,15 @@
 # SureFlap API
+This project provides a standalone RESTful API for [SureFlap Products](https://www.surepetcare.com/en-gb).The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables you to call the API from a variance of IoT devices and other applications more easily. The API is completely written in Python3. And the best is, you can get started within a few minutes. Just check out the documentation below.
 
 ## Getting started
 
+### Requirements
+- Python 3.X
+- pip (already installed with Python3)
+
 ### Installation
 
-Clone this repository to any directory on your linux machine
+Clone this repository to any directory on your machine
 
 ```bash
 git clone https://gitlab.com/home-automation-fabieu/sureflap-rest-api.git
