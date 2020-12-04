@@ -46,10 +46,6 @@ def route_getPetsFromHousehold(householdID):
 def route_getPet(householdID, petID):
     return jsonify(pets.getPet(householdID, petID))
 
-@app.route('/households/<householdID>/pets/location', methods=['GET'])
-def route_getPetsLocations(householdID):
-    return jsonify(pets.getPetsLocations(householdID))
-
 @app.route('/households/<householdID>/pets/<petID>/location', methods=['GET'])
 def route_getPetLocation(householdID, petID):
     return jsonify(pets.getPetLocation(petID))
@@ -57,6 +53,10 @@ def route_getPetLocation(householdID, petID):
 @app.route('/households/<householdID>/pets/<petID>/location', methods=['POST'])
 def route_setPetLocation(householdID, petID):
     return jsonify(pets.setPetLocation(petID, request.form))
+
+@app.route('/households/<householdID>/pets/location', methods=['GET'])
+def route_getPetsLocations(householdID):
+    return jsonify(pets.getPetsLocations(householdID))
 
 
 # Users
