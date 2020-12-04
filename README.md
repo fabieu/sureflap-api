@@ -12,13 +12,13 @@ This project provides a standalone RESTful API for [SureFlap Products](https://w
 Clone this repository to any directory on your machine
 
 ```bash
-git clone https://gitlab.com/home-automation-fabieu/sureflap-rest-api.git
+git clone https://github.com/fabieu/sureflap-api.git
 ```
 
 Move into the cloned repository via:
 
 ```bash
-cd ./sureflap-rest-api
+cd ./sureflap-api
 ```
 
 If you dont want to install the packages in your main package repository you can use a virtual environment. For more instructions visit the [official Python documentation](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
