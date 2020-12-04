@@ -8,7 +8,7 @@ def getHouseholds():
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
-    response = requests.get(uri, headers=headers).json()
+    response = requests.get(uri, headers=headers)
     
     if response.ok:
         data = json.loads(response.text)
