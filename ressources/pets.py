@@ -2,7 +2,6 @@ from ressources import config, auth, devices
 from flask import abort
 import requests
 import json
-import humanize
 from dateutil import tz
 from datetime import datetime
 
@@ -10,9 +9,8 @@ def getPetsFromHousehold(householdID):
     uri = config.endpoint + "/api/household/" + householdID + "/pet"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
-    payload = {'with[]': ['position']}
 
-    response = requests.get(uri, headers=headers, params=payload)
+    response = requests.get(uri, headers=headers)
 
     if response.ok:
         data = json.loads(response.text)
@@ -30,12 +28,10 @@ def getPet(householdID, petID):
     
     if response.ok: 
         data = json.loads(response.text)
-
+        
         for pet in data['data']:
             if str(pet['id']) == str(petID):
                 return pet
-            else:
-                return {"error": "Pet not found!"}, 404
     else:
         abort(response.status_code)
 
@@ -67,21 +63,23 @@ def getPetLocation(petID):
 def getPetsLocations(householdID):
     petInfo = []
     flaps = []
+    pets = []
 
     deviceList = devices.getDevices()
     for device in deviceList:
         if 'parent_device_id' in device:
             flaps.append(device)
 
-    pets = getPetsFromHousehold(householdID)
+    petList = getPetsFromHousehold(householdID)
+    for pet in petList:
+        pets.append(getPet(householdID, pet['id']))
+
     for pet in pets:
-        sinceUTC = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=tz.tzutc())
-        since = sinceUTC.astimezone(tz.tzlocal())
+        since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=tz.tzutc()).astimezone(tz.tzlocal())
         now = datetime.now().replace(tzinfo=tz.tzlocal())
         duration = str(now - since)
         duration = duration[0:duration.index('.')]
-        #duration = humanize.precisedelta((datetime.now() - since), format="%0.0f")
-        
+
         if pet['position']['where'] == 1:
             location = "Inside"
         else:
@@ -90,7 +88,7 @@ def getPetsLocations(householdID):
         petDict = {
             "name": pet['name'],
             "location": location,
-            "since": since,
+            "since": since.strftime("%Y-%m-%dT%H:%M:%S%z"),
             "duration": duration
         }
 
@@ -104,12 +102,12 @@ def setPetLocation(petID, form):
     try:
         _ = form['where']
     except KeyError:
-        return {"error": "No valid location provided. For more information visit: {ADD LINK TO DOCU}"}, 400
+        return {"error": "No valid location provided."}, 400
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
     body = {
-        "where": form['where'], #  1 = inside (default), 2 = outside
-        "since": datetime.datetime.now().strftime("%Y-%m-%d %X")
+        "where": form['where'], # 1 = inside, 2 = outside
+        "since": datetime.now().astimezone(tz.gettz('UTC')).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 
     response = requests.post(uri, headers=headers, data=body)
