@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Unofficial SureFlap API
-  description: "This is a wrapper API for the official SurePetcare API . You can find out more about the installation and usage of this API by visiting the corresponding GitHub repository at [https://gitlab.com/home-automation-fabieu/sureflap-rest-api](https://gitlab.com/home-automation-fabieu/sureflap-rest-api)"
+  description: "This is a wrapper API for the official SurePetcare API . You can find out more about the installation and usage of this API by visiting the corresponding GitHub repository at [https://github.com/fabieu/sureflap-api](https://github.com/fabieu/sureflap-api)"
   contact:
     email: dev@sustineo.de
   license:
