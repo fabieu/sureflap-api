@@ -75,8 +75,8 @@ def getPetsLocations(householdID):
         pets.append(getPet(householdID, pet['id']))
 
     for pet in pets:
-        since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=tz.tzutc()).astimezone(tz.tzlocal())
-        now = datetime.now().replace(tzinfo=tz.tzlocal())
+        since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=tz.tzutc())
+        now = datetime.now().replace(tzinfo=tz.tzlocal()).astimezone(tz.tzutc())
         duration = str(now - since)
         duration = duration[0:duration.index('.')]
 
@@ -88,7 +88,7 @@ def getPetsLocations(householdID):
         petDict = {
             "name": pet['name'],
             "location": location,
-            "since": since.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "since": since.strftime("%Y-%m-%dT%H:%M:%S+00:00"),
             "duration": duration
         }
 
