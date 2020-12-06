@@ -61,7 +61,6 @@ For the usage of the REST API take a look at the provided OpenAPI Specification 
 
 ## Roadmap
 
-- **[ACTIVE]** Complete the OpenAPI specification
 - Improve error handling to provide correct HTTP error codes
 - Usage of a WSGI server for better stability and performance
 
