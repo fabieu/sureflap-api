@@ -50,8 +50,8 @@ paths:
                 type: array
                 items:
                   anyOf:
-                    - $ref: "#/components/schemas/Hub Short"
-                    - $ref: "#/components/schemas/Flap Short"
+                    - $ref: "#/components/schemas/Hub-Short"
+                    - $ref: "#/components/schemas/Flap-Short"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini
   /devices/{deviceID}:
@@ -91,7 +91,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Household Short"
+                  $ref: "#/components/schemas/Household-Short"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini
   /households/{householdID}:
@@ -135,7 +135,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Pet Short"
+                  $ref: "#/components/schemas/Pet-Short"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini!
   /households/{householdID}/pets/{petID}:
@@ -293,7 +293,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User Short"
+                  $ref: "#/components/schemas/User-Short"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini!
   /households/{householdID}/users/{userID}:
@@ -320,7 +320,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User Detail"
+                $ref: "#/components/schemas/User-Detail"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini!
   /households/{householdID}/users/{userID}/photo:
@@ -347,7 +347,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User Photo"
+                $ref: "#/components/schemas/User-Photo"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini!
   /households/{householdID}/timeline:
@@ -370,7 +370,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Timeline Entry"
+                  $ref: "#/components/schemas/Timeline-Entry"
         "403":
           description: Authorization information is missing or invalid. Check the config.ini!
 components:
@@ -382,12 +382,12 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: "#/components/schemas/Hub Short"
-              - $ref: "#/components/schemas/Flap Short"
+              - $ref: "#/components/schemas/Hub-Short"
+              - $ref: "#/components/schemas/Flap-Short"
         households:
           type: array
           items:
-            $ref: "#/components/schemas/Household Dashboard"
+            $ref: "#/components/schemas/Household-Dashboard"
         pets:
           type: array
           items:
@@ -395,24 +395,20 @@ components:
         photos:
           type: array
           items:
-            $ref: "#/components/schemas/User Photo"
+            $ref: "#/components/schemas/User-Photo"
         tags:
           type: array
           items:
             $ref: "#/components/schemas/Tag"
         user:
           $ref: "#/components/schemas/User"
-    Household Dashboard:
-      type: object
-      properties:
-
     Hub:
       type: object
       properties:
         children:
           type: array
           items:
-            $ref: "#/components/schemas/Flap Short"
+            $ref: "#/components/schemas/Flap-Short"
         control:
           type: object
           properties:
@@ -489,7 +485,7 @@ components:
           type: string
           format: date-time
         parent:
-          $ref: "#/components/schemas/Hub Short"
+          $ref: "#/components/schemas/Hub-Short"
         parent_device_id:
           type: number
         product_id:
@@ -565,18 +561,18 @@ components:
         pets:
           type: array
           items:
-            $ref: "#/components/schemas/Pet Short"
+            $ref: "#/components/schemas/Pet-Short"
         share_code:
           type: string
         timezone_id:
-          type: string
+          type: number
         updated_at:
           type: string
           format: date-time
         users:
           type: array
           items:
-            $ref: "#/components/schemas/User Short"
+            $ref: "#/components/schemas/User-Short"
         version:
           type: string
     Pet:
@@ -698,7 +694,8 @@ components:
           type: string
         since:
           type: string
-    Timeline Entry:
+          format: date-time
+    Timeline-Entry:
       type: object
       properties:
         created_at:
@@ -734,7 +731,7 @@ components:
         pets:
           type: array
           items:
-            $ref: "#/components/schemas/Pet Short"
+            $ref: "#/components/schemas/Pet-Short"
         tags:
           type: array
           items:
@@ -745,7 +742,7 @@ components:
           type: string
           format: date-time
         users:
-          minitems: 0
+          minItems: 0
           type: array
           items:
             type: object
@@ -773,7 +770,39 @@ components:
           format: date-time
         version:
           type: string
-    User Short:
+    Invite:
+      type: object
+      properties:
+        acceptor_user_id:
+          type: number
+        code:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        creator_user_id:
+          type: number
+        email_adress:
+          type: string
+        id:
+          type: number
+        owner:
+          type: boolean
+        status:
+          type: number
+        updated_at:
+          type: string
+          format: date-time
+        user:
+          type: object
+          properties:
+            acceptor:
+              $ref: "#/components/schemas/User-Invite"
+            creator:
+              $ref: "#/components/schemas/User-Invite"
+        version:
+          type: string
+    User-Short:
       type: object
       properties:
         created_at:
@@ -790,7 +819,7 @@ components:
           type: string
         write:
           type: boolean
-    User Detail:
+    User-Detail:
       type: object
       properties:
         id:
@@ -799,7 +828,7 @@ components:
           type: string
         photo_id:
           type: number
-    User Photo:
+    User-Photo:
       type: object
       properties:
         created_at:
@@ -816,7 +845,33 @@ components:
           type: number
         version:
           type: string
-    Hub Short:
+    User-Invite:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        photo:
+          type: object
+          properties:
+            created_at:
+              type: string
+              format: date-time
+            id:
+              type: number
+            lcoation:
+              type: string
+            updated_at:
+              type: string
+              format: date-time
+            uploading_user_id:
+              type: number
+            version:
+              type: string
+        photo_id:
+          type: number
+    Hub-Short:
       type: object
       properties:
         created_at:
@@ -834,10 +889,10 @@ components:
           type: string
         updated_at:
           type: string
-          fornat: date-time
+          format: date-time
         version:
           type: string
-    Flap Short:
+    Flap-Short:
       type: object
       properties:
         created_at:
@@ -860,10 +915,10 @@ components:
           type: number
         updated_at:
           type: string
-          fornat: date-time
+          format: date-time
         version:
           type: string
-    Household Short:
+    Household-Short:
       type: object
       properties:
         created_at:
@@ -873,16 +928,14 @@ components:
           type: number
         name:
           type: string
-        share_code:
-          type: string
         timezone_id:
-          type: string
+          type: number
         updated_at:
           type: string
           format: date-time
         version:
           type: string
-    Pet Short:
+    Pet-Short:
       type: object
       properties:
         comments:
@@ -907,5 +960,32 @@ components:
         updated_at:
           type: string
           format: date-time
+        version:
+          type: string
+    Household-Dashboard:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        id:
+          type: number
+        invites:
+          type: array
+          items:
+            $ref: "#/components/schemas/Invite"
+        name:
+          type: string
+        share_code:
+          type: string
+        timezone_id:
+          type: number
+        updated_at:
+          type: string
+          format: date-time
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User-Short"
         version:
           type: string
