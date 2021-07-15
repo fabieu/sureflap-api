@@ -5,8 +5,9 @@ import json
 from dateutil import tz
 from datetime import datetime
 
+
 def getPetsFromHousehold(householdID):
-    uri = config.endpoint + "/api/household/" + householdID + "/pet"
+    uri = config.ENDPOINT + "/api/household/" + householdID + "/pet"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
@@ -18,25 +19,27 @@ def getPetsFromHousehold(householdID):
     else:
         abort(response.status_code)
 
+
 def getPet(householdID, petID):
-    uri = config.endpoint + "/api/household/" + householdID + "/pet"
+    uri = config.ENDPOINT + "/api/household/" + householdID + "/pet"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
-    payload = {'with[]': ['photo', 'position']} 
+    payload = {'with[]': ['photo', 'position']}
 
     response = requests.get(uri, headers=headers, params=payload)
-    
-    if response.ok: 
+
+    if response.ok:
         data = json.loads(response.text)
-        
+
         for pet in data['data']:
             if str(pet['id']) == str(petID):
                 return pet
     else:
         abort(response.status_code)
 
+
 def getPetLocation(petID):
-    uri = config.endpoint + "/api/pet/" + petID + "/position"
+    uri = config.ENDPOINT + "/api/pet/" + petID + "/position"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
@@ -47,18 +50,19 @@ def getPetLocation(petID):
 
         if data['data']['where'] == 1:
             petLocation = {
-                "pet_id" : data['data']['pet_id'],
+                "pet_id": data['data']['pet_id'],
                 "location": "Inside"
             }
         else:
             petLocation = {
-                "pet_id" : data['data']['pet_id'],
+                "pet_id": data['data']['pet_id'],
                 "location": "Outside"
             }
 
         return petLocation
     else:
         abort(response.status_code)
+
 
 def getPetsLocations(householdID):
     petInfo = []
@@ -78,7 +82,7 @@ def getPetsLocations(householdID):
         since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=tz.tzutc())
         now = datetime.now().replace(tzinfo=tz.tzlocal()).astimezone(tz.tzutc())
         duration = str(now - since)
-        duration = duration[0:duration.index('.')]
+        duration = duration[0:duration.index('.')]  # Remove milliseconds
 
         if pet['position']['where'] == 1:
             location = "Inside"
@@ -97,7 +101,7 @@ def getPetsLocations(householdID):
 
 
 def setPetLocation(petID, form):
-    uri = config.endpoint + "/api/pet/" + petID + "/position"
+    uri = config.ENDPOINT + "/api/pet/" + petID + "/position"
 
     try:
         _ = form['where']
@@ -106,7 +110,7 @@ def setPetLocation(petID, form):
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
     body = {
-        "where": form['where'], # 1 = inside, 2 = outside
+        "where": form['where'],  # 1 = inside, 2 = outside
         "since": datetime.now().astimezone(tz.gettz('UTC')).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 

@@ -3,8 +3,9 @@ from flask import abort
 import requests
 import json
 
+
 def getUsersFromHousehold(householdID):
-    uri = config.endpoint + "/api/household/" + householdID + "/user"
+    uri = config.ENDPOINT + "/api/household/" + householdID + "/user"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
@@ -15,9 +16,10 @@ def getUsersFromHousehold(householdID):
         return data['data']
     else:
         abort(response.status_code)
+
 
 def getUser(userID):
-    uri = config.endpoint + "/api/user/" + userID
+    uri = config.ENDPOINT + "/api/user/" + userID
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
@@ -29,9 +31,10 @@ def getUser(userID):
     else:
         abort(response.status_code)
 
+
 def getUserPhoto(userID):
-    userUri = config.endpoint + "/api/user/" + userID
-    photoUri = config.endpoint + "/api/photo/"
+    userUri = config.ENDPOINT + "/api/user/" + userID
+    photoUri = config.ENDPOINT + "/api/photo/"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
@@ -44,7 +47,7 @@ def getUserPhoto(userID):
         response = requests.get(photoUri, headers=headers)
 
         if response.ok:
-            data =json.loads(response.text)
+            data = json.loads(response.text)
             return data['data']
         else:
             abort(response.status_code)

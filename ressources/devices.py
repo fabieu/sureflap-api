@@ -3,8 +3,9 @@ from flask import abort
 import requests
 import json
 
+
 def getDevices():
-    uri = config.endpoint + "/api/device"
+    uri = config.ENDPOINT + "/api/device"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
@@ -18,13 +19,13 @@ def getDevices():
 
 
 def getDeviceByID(id):
-    uri = config.endpoint + "/api/device/" + id
+    uri = config.ENDPOINT + "/api/device/" + id
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
     payload = {'with[]': ['children', 'status', 'control']}
 
     response = requests.get(uri, headers=headers, params=payload)
-   
+
     if response.ok:
         data = json.loads(response.text)
         return data['data']

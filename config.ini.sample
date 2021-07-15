@@ -1,6 +1,6 @@
 [api]
-endpoint = "https://app.api.surehub.io"
+port = 2311
 
 [user]
-email = "SureFlapEmail"
-password = "SureFlapPassword"
+email = "SureFlap E-Mail"
+password = "SureFlap Password"

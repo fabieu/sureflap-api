@@ -3,8 +3,9 @@ from flask import abort
 import requests
 import json
 
+
 def getDashboard():
-    uri = config.endpoint + "/api/me/start"
+    uri = config.ENDPOINT + "/api/me/start"
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
