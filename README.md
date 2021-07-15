@@ -1,37 +1,59 @@
 # SureFlap API
-This project provides a standalone RESTful API for [SureFlap Products](https://www.surepetcare.com/en-gb).The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables you to call the API from a variance of IoT devices and other applications more easily. The API is completely written in Python3. And the best is, you can get started within a few minutes. Just check out the documentation below.
 
-## Getting started
+![](./docs/demo_1.jpg)
 
-### Requirements
-- Python 3.X
-- pip (already installed with Python3)
+This project provides a standalone RESTful API for [SureFlap Products](https://www.surepetcare.com).The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables you to call the API from a variance of IoT devices and other applications more easily. The API is completely written in Python3. And the best is, you can get started within a few minutes. Just check out the documentation below.
 
-### Installation
+&nbsp;
 
-Clone this repository to any directory on your machine
+## Requirements
+- Python >= 3.5
+- pipenv
+
+&nbsp;
+
+## Installation
+
+Clone this repository to any directory on your system:
 
 ```bash
 git clone https://github.com/fabieu/sureflap-api.git
 ```
 
-Move into the cloned repository via:
+Move into the cloned repository:
 
 ```bash
 cd ./sureflap-api
 ```
 
-If you dont want to install the packages in your main package repository you can use a virtual environment. For more instructions visit the [official Python documentation](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+This project utilizes **Pipenv**, a production-ready tool that aims to bring the best of all packaging worlds to the Python world. It harnesses Pipfile, pip, and virtualenv into one single command. You can read more about Pipenv [here](https://pipenv-fork.readthedocs.io/en/latest/).
 
-Installing required dependencies:
+Installing required dependencies in a virtual environment with Pipenv:
 
-```python
-pip install -r requirements.txt
+```bash
+pipenv install
 ```
 
-### Configuration
+&nbsp;
+
+## Configuration
 
 Before you can start exploring the API you have to rename the `config.ini.sample` in the root of the cloned repository to `config.ini` and edit the email and password settings. Here you need to insert the credentials for your SureFlap Petcare Account.
+
+&nbsp;
+
+## Usage
+
+Start the Flask API Server with the following command:
+
+```bash
+pipenv run python server.py
+```
+
+
+For the usage of the REST API take a look at the provided OpenAPI Specification on the main page of the webserver (http://localhost:3001). There you can find everything you need to know about the given methods and how to call them. Be aware that CORS is enabled. This is necessary to so that the SwaggerUI is working properly
+
+&nbsp;
 
 ### PM2 Setup (Optional)
 
@@ -44,20 +66,16 @@ npm install pm2 -g
 Add the application to PM2:
 
 ```bash
-pm2 start server.py --watch --log /var/log/sureflap.log --time --name SureFlap
+pm2 start pipenv run server.py --watch --time --name SureFlap_API
 ```
 
 Enable PM2 to restart the application on reboot:
 
 ```bash
 pm2 startup
-
 pm2 save
 ```
 
-## Usage
-
-For the usage of the REST API take a look at the provided OpenAPI Specification on the main page of the webserver (http://localhost:3001). There you can find everything you need to know about the given methods and how to call them.
 
 ## Roadmap
 

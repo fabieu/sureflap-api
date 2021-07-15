@@ -4,13 +4,14 @@ import requests
 import json
 import math
 
+
 def getTimeline(householdID):
-    uri = config.endpoint + "/api/timeline/household/" + householdID
+    uri = config.ENDPOINT + "/api/timeline/household/" + householdID
     result = []
 
     headers = {'Authorization': 'Bearer %s' % auth.getToken()}
 
-    response = requests.get(uri, headers=headers, params={'page_size' : 100})
+    response = requests.get(uri, headers=headers, params={'page_size': 100})
 
     if response.ok:
         data = json.loads(response.text)
@@ -20,16 +21,15 @@ def getTimeline(householdID):
         requestCount = math.ceil(count / pageSize)
 
         for i in range(1, requestCount+1):
-            payload = {'page_size' : 100, 'page' : i}
+            payload = {'page_size': 100, 'page': i}
             response = requests.get(uri, headers=headers, params=payload)
 
             if response.ok:
                 page = json.loads(response.text)
                 result += page['data']
-            else: 
+            else:
                 abort(response.status_code)
 
         return result
     else:
         abort(response.status_code)
-        

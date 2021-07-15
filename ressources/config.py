@@ -1,28 +1,80 @@
-import configparser
+from configparser import ConfigParser
 import os
-import validators
+import logging
+import logging.config
+from requests.models import ProtocolError
+import yaml
 
-try:
-    config = configparser.ConfigParser()
-    config.read(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'config.ini')))
+# Initialize logging
+with open('logging.conf', 'r') as f:
+    config = yaml.safe_load(f.read())
+    logging.config.dictConfig(config)
 
-    endpoint = config['api']['endpoint'].replace('"', '')
-    email = config['user']['email'].replace('"', '')
-    password = config['user']['password'].replace('"', '')
-except:
-    print('No valid config.ini found! Please make sure you rename "config.ini.sample" to "config.ini" and edit the settings correctly.')
-    os._exit(0)
+logger = logging.getLogger("sureflap")
 
 
-def validate():
-    if email != "SureFlapEmail" and password != "SureFlapPassword":
-        if validators.url(endpoint):
-            return True
-        else:
-            print("Invalid endpoint provided. Please check the syntax!")
-            return False
-    else:
-        print("Please edit the config.ini first!")
-        return False
+# Global configuration variables
+ENDPOINT = "https://app.api.surehub.io"
 
-    
+
+class InvalidConfig(Exception):
+    pass
+
+
+class ConfigValidator(ConfigParser):
+    def __init__(self, config_file):
+        super(ConfigValidator, self).__init__()
+
+        self.config_file = config_file
+        open(config_file)
+        self.read(config_file)
+        self.validate_config()
+
+    def validate_config(self):
+        required_values = {
+            'api': {
+                'port': None,
+            },
+            'user': {
+                'email': None,
+                'password': None,
+            },
+        }
+
+        for section, keys in required_values.items():
+            if section not in self:
+                raise InvalidConfig(
+                    f'{self.__class__.__name__}: Missing section "{section}" in {self.config_file}')
+
+            for key, values in keys.items():
+                if key not in self[section] or self[section][key] in ('', 'YOUR_PERSONAL_ACCESS_TOKEN'):
+                    raise InvalidConfig(
+                        f'{self.__class__.__name__}: Missing value for "{key}" in section "{section}" in {self.config_file}')
+
+                if values:
+                    if self[section][key] not in values:
+                        allowed_values = f"[{(', '.join(map(str, values)))}]"
+                        raise InvalidConfig(
+                            f'{self.__class__.__name__}: Invalid value for "{key}" under section "{section}" in {self.config_file} - allowed values are {allowed_values}')
+
+
+def init_config():
+    try:
+        config = ConfigValidator(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'config.ini')))
+
+        global EMAIL, PASSWORD, PORT
+        PORT = config['api']['port']
+        EMAIL = config['user']['email'].replace('"', '')
+        PASSWORD = config['user']['password'].replace('"', '')
+        return True
+
+    except FileNotFoundError:
+        logger.error(
+            'No config.ini found! Please make sure you rename "config.ini.sample" to "config.ini" and edit the settings correctly.')
+
+    except InvalidConfig as e:
+        logger.error(e)
+        raise SystemExit(2)
+
+    except:
+        logger.error("Configuration was not successfull!")

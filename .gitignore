@@ -1,6 +1,5 @@
 # Custom
 config.ini
-*.token
 .vscode/
 
 # Byte-compiled / optimized / DLL files

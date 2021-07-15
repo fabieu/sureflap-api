@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+requests = "*"
+cachetools = "*"
+jinja2 = "*"
+pyyaml = "*"
+python-dateutil = "*"
+flask-cors = "*"
+cherrypy = "*"
+
+[dev-packages]
+autopep8 = "*"
+
+[requires]
+python_version = "3"

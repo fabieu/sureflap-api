@@ -8,6 +8,7 @@ from flask import abort
 
 cache = TTLCache(maxsize=128, ttl=86400)
 
+
 def getToken():
     try:
         _ = cache["token"]
@@ -17,12 +18,12 @@ def getToken():
     if not cache["token"] == None:
         return cache["token"]
     else:
-        uri = config.endpoint + "/api/auth/login"
+        uri = config.ENDPOINT + "/api/auth/login"
 
         postParams = {
-            "email_address" : config.email,
-            "password" : config.password,
-            "device_id" : random.randrange(1000000000, 9999999999)
+            "email_address": config.EMAIL,
+            "password": config.PASSWORD,
+            "device_id": random.randrange(1000000000, 9999999999)
         }
 
         response = requests.post(uri, data=postParams)
@@ -30,11 +31,10 @@ def getToken():
         if response.ok:
             data = json.loads(response.text)
             cache["token"] = data['data']['token']
-            
+
             while cache["token"] is None:
                 time.sleep(0.3)
-            
+
             return cache["token"]
         else:
             abort(response.status_code)
-    
