@@ -1,12 +1,11 @@
 # SureFlap API
 
-![](./docs/demo_1.jpg)
-
 This project provides a standalone RESTful API for [SureFlap Products](https://www.surepetcare.com).The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables you to call the API from a variance of IoT devices and other applications more easily. The API is completely written in Python3. And the best is, you can get started within a few minutes. Just check out the documentation below.
 
 &nbsp;
 
 ## Requirements
+
 - Python >= 3.5
 - pipenv
 
@@ -50,7 +49,6 @@ Start the Flask API Server with the following command:
 pipenv run python server.py
 ```
 
-
 For the usage of the REST API take a look at the provided OpenAPI Specification on the main page of the webserver (http://localhost:3001). There you can find everything you need to know about the given methods and how to call them. Be aware that CORS is enabled. This is necessary to so that the SwaggerUI is working properly
 
 &nbsp;
@@ -76,7 +74,6 @@ pm2 startup
 pm2 save
 ```
 
-
 ## Roadmap
 
 - Improve error handling to provide correct HTTP error codes
@@ -84,7 +81,7 @@ pm2 save
 
 ## Special Thanks
 
-Thanks to [alextoft](https://github.com/alextoft) and [hdurdle](https://github.com/hdurdle) for their GitHub projects and shared ressources about the SureFlap API.  
+Thanks to [alextoft](https://github.com/alextoft) and [hdurdle](https://github.com/hdurdle) for their GitHub projects and shared resources about the SureFlap API.  
 You can look at the projects following the links below:
 
 - https://github.com/alextoft/sureflap
@@ -94,17 +91,11 @@ You can look at the projects following the links below:
 
 Copyright 2020 Fabian Eulitz
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 ## Disclaimer
 
