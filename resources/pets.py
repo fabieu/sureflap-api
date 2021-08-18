@@ -9,7 +9,7 @@ from datetime import datetime
 def getPetsFromHousehold(householdID):
     uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/pet"
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
     response = requests.get(uri, headers=headers)
 
@@ -17,13 +17,13 @@ def getPetsFromHousehold(householdID):
         data = json.loads(response.text)
         return data['data']
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
 def getPet(householdID, petID):
     uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/pet"
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['photo', 'position']}
 
     response = requests.get(uri, headers=headers, params=payload)
@@ -35,13 +35,13 @@ def getPet(householdID, petID):
             if str(pet['id']) == str(petID):
                 return pet
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
 def getPetLocation(petID):
     uri = config.ENDPOINT + "/api/pet/" + str(petID) + "/position"
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
     response = requests.get(uri, headers=headers)
 
@@ -61,7 +61,7 @@ def getPetLocation(petID):
 
         return petLocation
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
 def getPetsLocations(householdID):
@@ -108,7 +108,7 @@ def setPetLocation(petID, form):
     except KeyError:
         return {"error": "No valid location provided."}, 400
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
     body = {
         "where": form['where'],  # 1 = inside, 2 = outside
         "since": datetime.now().astimezone(tz.gettz('UTC')).strftime("%Y-%m-%dT%H:%M:%S+00:00")
@@ -120,4 +120,4 @@ def setPetLocation(petID, form):
         data = json.loads(response.text)
         return data['data']
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))

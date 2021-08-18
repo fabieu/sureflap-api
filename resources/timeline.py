@@ -9,7 +9,7 @@ def getTimeline(householdID):
     uri = config.ENDPOINT + "/api/timeline/household/" + str(householdID)
     result = []
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
     response = requests.get(uri, headers=headers, params={'page_size': 100})
 
@@ -22,14 +22,14 @@ def getTimeline(householdID):
 
         for i in range(1, requestCount+1):
             payload = {'page_size': 1000, 'page': i}
-            response = requests.get(uri, headers=headers, params=payload)
+            response2 = requests.get(uri, headers=headers, params=payload)
 
-            if response.ok:
-                page = json.loads(response.text)
+            if response2.ok:
+                page = json.loads(response2.text)
                 result += page['data']
             else:
-                raise HTTPException(status_code=response.status_code)
+                raise HTTPException(status_code=response.status_code, detail=response2.text.replace("\"", "'"))
 
         return result
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))

@@ -11,78 +11,79 @@ app = FastAPI()
 
 
 # Dashboard
-@app.get('/')
-async def get_dashboard():
+@app.get('/dashboard')
+def get_dashboard():
     return dashboard.getDashboard()
 
 
 @app.get('/devices')
-async def get_devices():
+def get_devices():
     return devices.getDevices()
 
 
 @app.get('/devices/{id}')
-async def get_device_by_ID(id: int):
+def get_device_by_ID(id: int):
     return devices.getDeviceByID(id)
 
 
 # Households
 @app.get('/households')
-async def get_households():
+def get_households():
     return households.getHouseholds()
 
 
 @app.get('/households/{householdID}')
-async def get_household_by_ID(householdID: int):
+def get_household_by_ID(householdID: int):
     return households.getHouseholdByID(householdID)
 
 
 # Pets
 @app.get('/households/{householdID}/pets')
-async def get_pets_from_household(householdID: int):
+def get_pets_from_household(householdID: int):
     return pets.getPetsFromHousehold(householdID)
 
 
 @app.get('/households/{householdID}/pets/{petID}')
-async def get_pet(householdID: int, petID: int):
+def get_pet(householdID: int, petID: int):
     return pets.getPet(householdID, petID)
 
 
 @app.get('/households/{householdID}/pets/{petID}/location')
-async def get_pet_location(householdID: int, petID: int):
+def get_pet_location(householdID: int, petID: int):
     return pets.getPetLocation(petID)
 
 
 @app.get('/households/{householdID}/pets/{petID}/location')
-async def set_pet_location(householdID: int, petID: int):
+def set_pet_location(householdID: int, petID: int):
     return pets.setPetLocation(petID, request.form)
 
 
 @app.get('/households/{householdID}/pets/location')
-async def get_pets_locations(householdID: int):
+def get_pets_locations(householdID: int):
     return pets.getPetsLocations(householdID)
 
 
 # Users
 @app.get('/households/{householdID}/users')
-async def get_users_from_household(householdID: int):
+def get_users_from_household(householdID: int):
     return users.getUsersFromHousehold(householdID)
 
 
 @app.get('/households/{householdID}/users/{userID}')
-async def get_user(householdID: int, userID: int):
+def get_user(householdID: int, userID: int):
     return users.getUser(userID)
 
 
 @app.get('/households/{householdID}/users/{userID}/photo')
-async def get_user_photo(householdID: int, userID: int):
+def get_user_photo(householdID: int, userID: int):
     return users.getUserPhoto(userID)
+
 
 """ 
 # Currently disabled due to timeout on large timelines
 # Timeline
 @app.get('/households/{householdID}/timeline')
-async def get_timeline(householdID: int):
+def get_timeline(householdID: int):
     return timeline.getTimeline(householdID)
 """
 
@@ -119,11 +120,8 @@ def custom_openapi():
 
 
 if __name__ == '__main__':
-    # Validate and initialize configuration by file (config.ini)
-    config.init_config()
-
     # Call method to configure FastAPI
     init_FastAPI()
 
     # Run ASGI server
-    uvicorn.run("server:app", port=int(config.PORT), reload=False)
+    uvicorn.run("server:app", port=int(config.PORT), host="0.0.0.0", reload=True)

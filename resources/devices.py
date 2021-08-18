@@ -7,7 +7,7 @@ import json
 def getDevices():
     uri = config.ENDPOINT + "/api/device"
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
     response = requests.get(uri, headers=headers)
 
@@ -15,13 +15,13 @@ def getDevices():
         data = json.loads(response.text)
         return data['data']
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
 def getDeviceByID(id):
     uri = config.ENDPOINT + "/api/device/" + str(id)
 
-    headers = {'Authorization': 'Bearer %s' % auth.getToken()}
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['children', 'status', 'control']}
 
     response = requests.get(uri, headers=headers, params=payload)
@@ -30,4 +30,4 @@ def getDeviceByID(id):
         data = json.loads(response.text)
         return data['data']
     else:
-        raise HTTPException(status_code=response.status_code)
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))

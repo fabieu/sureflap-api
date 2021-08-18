@@ -33,4 +33,4 @@ def getToken():
 
             return data["token"]
         else:
-            raise HTTPException(status_code=response.status_code)
+            raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
