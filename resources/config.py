@@ -3,14 +3,6 @@ import os
 import sys
 import logging
 
-# Logging configuration
-logging.basicConfig(
-    stream=sys.stdout,
-    level=logging.INFO,
-    datefmt='%Y-%m-%d %H:%M:%S',
-    format='%(asctime)s %(levelname)s %(message)s'
-)
-
 # Global configuration variables
 ENDPOINT = "https://app.api.surehub.io"
 
@@ -63,27 +55,26 @@ class ConfigValidator(configparser.ConfigParser):
         return result
 
 
-def init_config():
-    try:
-        config_validator = ConfigValidator(os.path.abspath(
-            os.path.join(os.path.dirname(__file__), '..', 'config.ini')))
+try:
+    config_validator = ConfigValidator(os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..', 'config.ini')))
 
-        # Set config attributes
-        global PORT, CORS, EMAIL, PASSWORD
-        PORT = config_validator.get_setting('api', 'port')
-        CORS = config_validator.get_setting('api', 'cors')
-        EMAIL = config_validator.get_setting('user', 'email')
-        PASSWORD = config_validator.get_setting('user', 'password')
+    # Set config attributes
+    global PORT, CORS, EMAIL, PASSWORD
+    PORT = config_validator.get_setting('api', 'port')
+    CORS = config_validator.get_setting('api', 'cors')
+    EMAIL = config_validator.get_setting('user', 'email')
+    PASSWORD = config_validator.get_setting('user', 'password')
 
-    except FileNotFoundError:
-        logging.error(
-            'No config.ini found! Please make sure you rename "config.ini.sample" to "config.ini" and edit the settings correctly.')
-        raise SystemExit(2)
+except FileNotFoundError:
+    logging.error(
+        'No config.ini found! Please make sure you rename "config.ini.sample" to "config.ini" and edit the settings correctly.')
+    raise SystemExit(2)
 
-    except InvalidConfig as e:
-        logging.error(e)
-        raise SystemExit(2)
+except InvalidConfig as e:
+    logging.error(e)
+    raise SystemExit(2)
 
-    except:
-        logging.error("Configuration not successfull due to an unknown error!")
-        raise SystemExit(2)
+except:
+    logging.error("Configuration not successfull due to an unknown error!")
+    raise SystemExit(2)
