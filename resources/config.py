@@ -24,6 +24,8 @@ class ConfigValidator(configparser.ConfigParser):
         required_values = {
             'api': {
                 'port': None,
+                'loglevel': ['critical', 'error', 'warning', 'info', 'debug', 'trace'],
+                'debug': ['false', 'true']
             },
             'user': {
                 'email': None,
@@ -60,11 +62,13 @@ try:
         os.path.join(os.path.dirname(__file__), '..', 'config.ini')))
 
     # Set config attributes
-    global PORT, CORS, EMAIL, PASSWORD
-    PORT = config_validator.get_setting('api', 'port')
-    CORS = config_validator.get_setting('api', 'cors')
-    EMAIL = config_validator.get_setting('user', 'email')
-    PASSWORD = config_validator.get_setting('user', 'password')
+    global PORT, CORS, EMAIL, PASSWORD, LOGLEVEL
+    PORT = int(config_validator.get_setting('api', 'port'))
+    CORS = str(config_validator.get_setting('api', 'cors'))
+    EMAIL = str(config_validator.get_setting('user', 'email'))
+    PASSWORD = str(config_validator.get_setting('user', 'password'))
+    LOGLEVEL = str(config_validator.get_setting('api', 'loglevel'))
+    DEBUG = True if str(config_validator.get_setting('api', 'debug')) in ["True", "true", "1"] else False
 
 except FileNotFoundError:
     logging.error(

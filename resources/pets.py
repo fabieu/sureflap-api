@@ -103,14 +103,9 @@ def getPetsLocations(householdID):
 def setPetLocation(petID, form):
     uri = config.ENDPOINT + "/api/pet/" + str(petID) + "/position"
 
-    try:
-        _ = form['where']
-    except KeyError:
-        return {"error": "No valid location provided."}, 400
-
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     body = {
-        "where": form['where'],  # 1 = inside, 2 = outside
+        "where": form.where.value,  # 1 = inside, 2 = outside
         "since": datetime.now().astimezone(tz.gettz('UTC')).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 

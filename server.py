@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
-from resources import config, devices, households, timeline, dashboard, pets, users
+from resources import config, devices, households, timeline, dashboard, pets, users, response_models, request_models
+from typing import Sequence, Union
 import uvicorn
 
 __version__ = "1.0.0"
@@ -11,86 +12,77 @@ app = FastAPI()
 
 
 # Dashboard
-@app.get('/dashboard')
+@app.get('/dashboard', response_model=response_models.Dashboard)
 def get_dashboard():
     return dashboard.getDashboard()
 
 
-@app.get('/devices')
+@app.get('/devices', response_model=Sequence[Union[response_models.HubShort, response_models.FlapShort]])
 def get_devices():
     return devices.getDevices()
 
 
-@app.get('/devices/{id}')
+@app.get('/devices/{id}', response_model=Union[response_models.Hub, response_models.Flap])
 def get_device_by_ID(id: int):
     return devices.getDeviceByID(id)
 
 
 # Households
-@app.get('/households')
+@app.get('/households', response_model=Sequence[response_models.HouseholdShort])
 def get_households():
     return households.getHouseholds()
 
 
-@app.get('/households/{householdID}')
+@app.get('/households/{householdID}', response_model=response_models.Household)
 def get_household_by_ID(householdID: int):
     return households.getHouseholdByID(householdID)
 
 
 # Pets
-@app.get('/households/{householdID}/pets')
+@app.get('/households/{householdID}/pets', response_model=Sequence[response_models.PetShort])
 def get_pets_from_household(householdID: int):
     return pets.getPetsFromHousehold(householdID)
 
 
-@app.get('/households/{householdID}/pets/{petID}')
+@app.get('/households/{householdID}/pets/{petID}', response_model=response_models.Pet)
 def get_pet(householdID: int, petID: int):
     return pets.getPet(householdID, petID)
 
 
-@app.get('/households/{householdID}/pets/{petID}/location')
+@app.get('/households/{householdID}/pets/{petID}/location', response_model=response_models.PetLocation)
 def get_pet_location(householdID: int, petID: int):
     return pets.getPetLocation(petID)
 
 
-@app.get('/households/{householdID}/pets/{petID}/location')
-def set_pet_location(householdID: int, petID: int):
-    return pets.setPetLocation(petID, request.form)
+@app.post('/households/{householdID}/pets/{petID}/location', response_model=response_models.PetLocationUpdate)
+def set_pet_location(householdID: int, petID: int, payload: request_models.PetLocationSet):
+    return pets.setPetLocation(petID, payload)
 
 
-@app.get('/households/{householdID}/pets/location')
+@app.get('/households/{householdID}/pets/location', response_model=Sequence[response_models.PetLocations])
 def get_pets_locations(householdID: int):
     return pets.getPetsLocations(householdID)
 
 
 # Users
-@app.get('/households/{householdID}/users')
+@app.get('/households/{householdID}/users', response_model=Sequence[response_models.UserShort])
 def get_users_from_household(householdID: int):
     return users.getUsersFromHousehold(householdID)
 
 
-@app.get('/households/{householdID}/users/{userID}')
+@app.get('/households/{householdID}/users/{userID}', response_model=response_models.User)
 def get_user(householdID: int, userID: int):
     return users.getUser(userID)
 
 
-@app.get('/households/{householdID}/users/{userID}/photo')
+@app.get('/households/{householdID}/users/{userID}/photo', response_model=response_models.Photo)
 def get_user_photo(householdID: int, userID: int):
     return users.getUserPhoto(userID)
 
 
-""" 
-# Currently disabled due to timeout on large timelines
-# Timeline
-@app.get('/households/{householdID}/timeline')
-def get_timeline(householdID: int):
-    return timeline.getTimeline(householdID)
-"""
-
-
 def init_FastAPI():
     # Custom OpenAPI Schema
-    app.openapi = custom_openapi
+    app.openapi = custom_openapi()
 
     # CORS Configuration
     if config.CORS is not None:
@@ -124,4 +116,4 @@ if __name__ == '__main__':
     init_FastAPI()
 
     # Run ASGI server
-    uvicorn.run("server:app", port=int(config.PORT), host="0.0.0.0", reload=True)
+    uvicorn.run("server:app", port=config.PORT, host="0.0.0.0", log_level=config.LOGLEVEL, reload=config.DEBUG)
