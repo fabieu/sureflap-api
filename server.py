@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from resources import config, devices, households, timeline, dashboard, pets, users, response_models, request_models
 from typing import Sequence, Union
 import uvicorn
+from _version import __version__
 
-__version__ = "1.0.0"
 
 # FastAPI configration
 app = FastAPI()
@@ -81,9 +81,6 @@ def get_user_photo(householdID: int, userID: int):
 
 
 def init_FastAPI():
-    # Custom OpenAPI Schema
-    app.openapi = custom_openapi()
-
     # CORS Configuration
     if config.CORS is not None:
         origins = config.CORS.split(",")
@@ -107,9 +104,14 @@ def custom_openapi():
         description="This provides a standalone RESTful API for [SureFlap Products](https://www.surepetcare.com).The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables you to call the API from a variance of IoT devices and other applications more easily.",
         routes=app.routes,
     )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://www.surepetcare.com/media/sure_petcare_logos/sure_petcare_logo_paw_landscape_rgb_438x171.png"}
     app.openapi_schema = openapi_schema
+
     return app.openapi_schema
 
+
+app.openapi = custom_openapi
 
 if __name__ == '__main__':
     # Call method to configure FastAPI
