@@ -101,11 +101,9 @@ def custom_openapi():
     openapi_schema = get_openapi(
         title="Unofficial SureFlap API",
         version=__version__,
-        description="This provides a standalone RESTful API for [SureFlap Products](https://www.surepetcare.com).The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables you to call the API from a variance of IoT devices and other applications more easily.",
+        description="SureFlap API is a standalone RESTful API for products from [Sure Petcare](https://www.surepetcare.com). The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables a variety of IoT devices and other applications to connect to SureFlap devices more easily.",
         routes=app.routes,
     )
-    openapi_schema["info"]["x-logo"] = {
-        "url": "https://www.surepetcare.com/media/sure_petcare_logos/sure_petcare_logo_paw_landscape_rgb_438x171.png"}
     app.openapi_schema = openapi_schema
 
     return app.openapi_schema
@@ -118,4 +116,4 @@ if __name__ == '__main__':
     init_FastAPI()
 
     # Run ASGI server
-    uvicorn.run("server:app", port=config.PORT, host="0.0.0.0", log_level=config.LOGLEVEL, reload=config.DEBUG)
+    uvicorn.run("server:app", port=config.PORT, host="0.0.0.0", log_level=config.LOG_LEVEL, reload=config.DEBUG)

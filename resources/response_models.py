@@ -122,8 +122,7 @@ class UserDetail(BaseModel):
     photo_id: Optional[float] = None
 
 
-# +++++++++++++++++++++++ SHORT MODELS +++++++++++++++++++++++++
-
+# HubShort Base Model
 class HubShort(BaseModel):
     created_at: Optional[datetime] = None
     household_id: Optional[float] = None
@@ -135,6 +134,7 @@ class HubShort(BaseModel):
     version: Optional[str] = None
 
 
+# FlapShort Base Model
 class FlapShort(BaseModel):
     created_at: Optional[datetime] = None
     household_id: Optional[float] = None
@@ -148,6 +148,7 @@ class FlapShort(BaseModel):
     version: Optional[str] = None
 
 
+# HouseholdShort Base Model
 class HouseholdShort(BaseModel):
     created_at: Optional[datetime] = None
     id: Optional[float] = None
@@ -157,6 +158,7 @@ class HouseholdShort(BaseModel):
     version: Optional[str] = None
 
 
+# PetShort Base Model
 class PetShort(BaseModel):
     comments: Optional[str] = None
     created_at: Optional[datetime] = None
@@ -170,8 +172,6 @@ class PetShort(BaseModel):
     updated_at: Optional[datetime] = None
     version: Optional[str] = None
 
-
-# +++++++++++++++++++++++ EXTENDED MODELS +++++++++++++++++++++++++
 
 # Hub Base Model
 class HubVersion(BaseModel):
@@ -278,7 +278,6 @@ class Household(BaseModel):
 
 
 # Invite Base Model
-
 class InviteUser(BaseModel):
     id: Optional[float] = None
     name: Optional[str] = None
