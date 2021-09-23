@@ -10,10 +10,10 @@ SureFlap API is a standalone RESTful API for products from [Sure Petcare](https:
 
 ## Installation
 
-Clone this repository to your system and move into the root folder:
+Clone this repository to your system and move into the sureflap project folder:
 
 ```bash
-git clone https://github.com/fabieu/sureflap-api.git && cd ./sureflap-api
+git clone https://github.com/fabieu/sureflap-api.git && cd ./sureflap-api/sureflap
 ```
 
 This project utilizes **Pipenv**, a production-ready tool that aims to bring the best of all packaging worlds to the Python world. It harnesses Pipfile, pip, and virtualenv into one single command. You can read more about Pipenv [here](https://pipenv-fork.readthedocs.io/en/latest/).
