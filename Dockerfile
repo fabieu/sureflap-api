@@ -8,4 +8,4 @@ WORKDIR /app/
 RUN pip3 install pipenv
 RUN pipenv install --ignore-pipfile
 
-ENTRYPOINT [ "pipenv", "run", "--", "python", "server.py" ]
+ENTRYPOINT [ "pipenv", "run", "--", "python", "server.py"]

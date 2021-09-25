@@ -1,10 +1,14 @@
+# Pip modules
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-from resources import config, devices, households, timeline, dashboard, pets, users, response_models, request_models
-from typing import Sequence, Union
 import uvicorn
+import typer
+from typing import Sequence, Union
+
+# Custom modules
+from resources import config, devices, households, timeline, dashboard, pets, users, response_models, request_models
 from _version import __version__
 
 
@@ -118,9 +122,28 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
-if __name__ == '__main__':
+
+def main(
+    port: int = typer.Option(3001, help="Port for the ASGI server"),
+    loglevel: str = typer.Option("warning", callback=config.validate_loglevel,
+                                 help="Log level passed to the ASGI sever and the python logging framework"),
+    email: str = typer.Option(..., help="Email of the SurePetcare account used to connect to the official API"),
+    password: str = typer.Option(..., help="Password of the SurePetcare account used to connect to the official API"),
+    cors: str = typer.Option(None, help="Enables CORS for the specified domain names or ip adresses")
+):
+    # Set config variables
+    config.PORT = port
+    config.LOGLEVEL = loglevel
+    config.EMAIL = email
+    config.PASSWORD = password
+    config.CORS = cors
+
     # Call method to configure FastAPI
     init_FastAPI()
 
     # Run ASGI server
-    uvicorn.run("server:app", port=config.PORT, host="0.0.0.0", log_level=config.LOG_LEVEL, reload=config.DEBUG)
+    uvicorn.run("server:app", port=config.PORT, host="0.0.0.0", log_level=config.LOGLEVEL)
+
+
+if __name__ == '__main__':
+    typer.run(main)
