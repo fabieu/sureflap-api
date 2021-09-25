@@ -1,8 +1,0 @@
-[api]
-log_level = info
-debug = false
-port = 3001
-
-[auth]
-email = {SureFlap E-Mail}
-password = {SureFlap Password}
