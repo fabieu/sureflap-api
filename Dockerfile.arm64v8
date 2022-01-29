@@ -2,7 +2,6 @@ FROM alpine:3 AS qemu
 
 #QEMU Download
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v6.0.0%2Bbalena1/qemu-6.0.0.balena1-aarch64.tar.gz
-RUN echo ${QEMU_URL}
 RUN apk add curl && \
     curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 
