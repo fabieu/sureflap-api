@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  sureflap-api:
+    image: fabieu/sureflap-api:latest
+    container_name: sureflap-api
+    environment:
+      - SUREFLAP_EMAIL=
+      - SUREFLAP_PASSWORD=
+      - SUREFLAP_LOGLEVEL=warning
+    ports:
+      - "8080:3001"

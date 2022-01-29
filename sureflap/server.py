@@ -1,14 +1,16 @@
+# Python modules
+from os import environ
+
 # Pip modules
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 import uvicorn
-import typer
 from typing import Sequence, Union
 
 # Custom modules
-from resources import config, devices, households, timeline, dashboard, pets, users, response_models, request_models
+from resources import config, devices, households, dashboard, pets, users, response_models, request_models
 from _version import __version__
 
 
@@ -19,7 +21,7 @@ app = FastAPI()
 # Redirect default url to docs
 @app.get("/", include_in_schema=False)
 def root():
-    return RedirectResponse(url='/docs')
+    return RedirectResponse(url='/redoc')
 
 
 # Dashboard
@@ -123,20 +125,14 @@ def custom_openapi():
 app.openapi = custom_openapi
 
 
-def main(
-    port: int = typer.Option(3001, help="Port for the ASGI server"),
-    loglevel: str = typer.Option("warning", callback=config.validate_loglevel,
-                                 help="Log level passed to the ASGI sever and the python logging framework"),
-    email: str = typer.Option(..., help="Email of the SurePetcare account used to connect to the official API"),
-    password: str = typer.Option(..., help="Password of the SurePetcare account used to connect to the official API"),
-    cors: str = typer.Option(None, help="Enables CORS for the specified domain names or ip adresses")
-):
+def main():
     # Set config variables
-    config.PORT = port
-    config.LOGLEVEL = loglevel
-    config.EMAIL = email
-    config.PASSWORD = password
-    config.CORS = cors
+    config.EMAIL = environ.get("SUREFLAP_EMAIL")
+    config.PASSWORD = environ.get("SUREFLAP_PASSWORD")
+    config.PORT = environ.get("SUREFLAP_PORT", 3001)
+    config.LOGLEVEL = environ.get("SUREFLAP_LOGLEVEL", "warning")
+    config.CORS = environ.get("SUREFLAP_CORS", None)
+    config.validate()
 
     # Call method to configure FastAPI
     init_FastAPI()
@@ -146,4 +142,4 @@ def main(
 
 
 if __name__ == '__main__':
-    typer.run(main)
+    main()

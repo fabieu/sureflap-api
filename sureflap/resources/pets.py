@@ -2,8 +2,7 @@ from resources import config, auth, devices
 from fastapi import HTTPException
 import requests
 import json
-from dateutil import tz
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def getPetsFromHousehold(householdID):
@@ -79,8 +78,8 @@ def getPetsLocations(householdID):
         pets.append(getPet(householdID, pet['id']))
 
     for pet in pets:
-        since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=tz.tzutc())
-        now = datetime.now().replace(tzinfo=tz.tzlocal()).astimezone(tz.tzutc())
+        since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=timezone.utc)
+        now = datetime.now(timezone.utc)
         duration = str(now - since)
         duration = duration[0:duration.index('.')]  # Remove milliseconds
 
@@ -106,7 +105,7 @@ def setPetLocation(petID, form):
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     body = {
         "where": form.where.value,  # 1 = inside, 2 = outside
-        "since": datetime.now().astimezone(tz.gettz('UTC')).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+        "since": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 
     response = requests.post(uri, headers=headers, data=body)

@@ -1,0 +1,22 @@
+FROM alpine:3 AS qemu
+
+#QEMU Download
+ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v6.0.0%2Bbalena1/qemu-6.0.0.balena1-aarch64.tar.gz
+RUN echo ${QEMU_URL}
+RUN apk add curl && \
+    curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
+
+
+FROM arm64v8/python:3.10-alpine
+# Add QEMU
+COPY --from=qemu qemu-aarch64-static /usr/bin
+
+COPY Pipfile.lock /app/
+COPY sureflap /app/
+
+WORKDIR /app/
+
+RUN pip3 install pipenv && \
+    pipenv install --ignore-pipfile
+
+ENTRYPOINT [ "pipenv", "run", "--", "python", "server.py"]

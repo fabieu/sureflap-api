@@ -1,0 +1,16 @@
+image: fabieu/sureflap-api:latest
+manifests:
+  - image: fabieu/sureflap-api:latest
+    platform:
+      architecture: amd64
+      os: linux
+  - image: fabieu/sureflap-api:latest-arm64v8
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
+  - image: fabieu/sureflap-api:latest-arm32v7
+    platform:
+      architecture: arm
+      os: linux
+      variant: v7
