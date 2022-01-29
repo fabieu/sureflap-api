@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="256" heigth="256" src="https://github.com/fabieu/sureflap-api/blob/main/assets/logo.jpg" alt="logo">
+  <img width="256" heigth="256" src="https://github.com/fabieu/sureflap-api/raw/main/assets/logo.png" alt="logo">
 </div>
 
 ![Docker Pulls](https://img.shields.io/docker/pulls/fabieu/sureflap-api) ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/fabieu/sureflap-api) ![GitHub last commit](https://img.shields.io/github/last-commit/fabieu/sureflap-api) [![GitHub issues](https://img.shields.io/github/issues/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/issues) [![GitHub license](https://img.shields.io/github/license/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/blob/main/LICENSE)
