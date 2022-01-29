@@ -4,12 +4,12 @@ manifests:
     platform:
       architecture: amd64
       os: linux
-  - image: fabieu/sureflap-api:arm64v8
+  - image: fabieu/sureflap-api:arm64
     platform:
       architecture: arm64
       os: linux
       variant: v8
-  - image: fabieu/sureflap-api:arm32v7
+  - image: fabieu/sureflap-api:arm32
     platform:
       architecture: arm
       os: linux
