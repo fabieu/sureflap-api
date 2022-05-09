@@ -1,12 +1,18 @@
-from resources import config, auth, devices
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 from datetime import datetime, timezone
 
+# PyPi modules
+from fastapi import HTTPException
+import requests
 
-def getPetsFromHousehold(householdID):
-    uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/pet"
+# Local modules
+from sureflap_api.modules import auth, devices
+from sureflap_api.config import settings
+
+
+def getPetsFromHousehold(householdID) -> str:
+    uri = f"{settings.ENDPOINT}/api/household/{householdID}/pet"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -19,8 +25,8 @@ def getPetsFromHousehold(householdID):
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getPet(householdID, petID):
-    uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/pet"
+def getPet(householdID, petID) -> str:
+    uri = f"{settings.ENDPOINT}/api/household/{householdID}/pet"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['photo', 'position']}
@@ -37,8 +43,8 @@ def getPet(householdID, petID):
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getPetLocation(petID):
-    uri = config.ENDPOINT + "/api/pet/" + str(petID) + "/position"
+def getPetLocation(petID) -> str:
+    uri = f"{settings.ENDPOINT}/api/pet/{petID}/position"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -63,7 +69,7 @@ def getPetLocation(petID):
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getPetsLocations(householdID):
+def getPetsLocations(householdID) -> str:
     petInfo = []
     flaps = []
     pets = []
@@ -99,8 +105,8 @@ def getPetsLocations(householdID):
     return petInfo
 
 
-def setPetLocation(petID, form):
-    uri = config.ENDPOINT + "/api/pet/" + str(petID) + "/position"
+def setPetLocation(petID, form) -> str:
+    uri = f"{settings.ENDPOINT}/api/pet/{petID}/position"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     body = {

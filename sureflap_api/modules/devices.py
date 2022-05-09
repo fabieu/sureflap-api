@@ -1,11 +1,17 @@
-from resources import config, auth
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 
+# PyPi modules
+from fastapi import HTTPException
+import requests
 
-def getDevices():
-    uri = config.ENDPOINT + "/api/device"
+# Local modules
+from sureflap_api.modules import auth
+from sureflap_api.config import settings
+
+
+def getDevices() -> str:
+    uri = f"{settings.ENDPOINT}/api/device"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -18,8 +24,8 @@ def getDevices():
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getDeviceByID(id):
-    uri = config.ENDPOINT + "/api/device/" + str(id)
+def getDeviceByID(id) -> str:
+    uri = f"{settings.ENDPOINT}/api/device/{id}"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['children', 'status', 'control']}

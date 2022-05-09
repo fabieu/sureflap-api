@@ -1,7 +1,6 @@
-# Python modules
-from os import environ
+# Built-in modules
 
-# Pip modules
+# PyPi modules
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,10 +8,10 @@ from starlette.responses import RedirectResponse
 import uvicorn
 from typing import Sequence, Union
 
-# Custom modules
-from resources import config, devices, households, dashboard, pets, users, response_models, request_models
-from _version import __version__
-
+# Local modules
+from sureflap_api.modules import devices, households, dashboard, pets, users, response_models, request_models
+from sureflap_api.config import settings
+from sureflap_api import __version__
 
 # FastAPI configration
 app = FastAPI()
@@ -95,8 +94,8 @@ def get_user_photo(householdID: int, userID: int):
 
 def init_FastAPI():
     # CORS Configuration
-    if config.CORS is not None:
-        origins = config.CORS.split(",")
+    if settings.CORS:
+        origins = settings.CORS.split(",")
 
         app.add_middleware(
             CORSMiddleware,
@@ -126,19 +125,11 @@ app.openapi = custom_openapi
 
 
 def main():
-    # Set config variables
-    config.EMAIL = environ.get("SUREFLAP_EMAIL")
-    config.PASSWORD = environ.get("SUREFLAP_PASSWORD")
-    config.PORT = environ.get("SUREFLAP_PORT", 3001)
-    config.LOGLEVEL = environ.get("SUREFLAP_LOGLEVEL", "warning")
-    config.CORS = environ.get("SUREFLAP_CORS", None)
-    config.validate()
-
     # Call method to configure FastAPI
     init_FastAPI()
 
     # Run ASGI server
-    uvicorn.run("server:app", port=config.PORT, host="0.0.0.0", log_level=config.LOGLEVEL)
+    uvicorn.run("main:app", port=settings.PORT, host="0.0.0.0", log_level=settings.LOGLEVEL)
 
 
 if __name__ == '__main__':

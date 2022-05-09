@@ -1,11 +1,11 @@
-FROM python:3.10-alpine
+FROM python:3.10-slim
 
-COPY Pipfile.lock /app/
-COPY sureflap /app/
+COPY sureflap_api /app/
+COPY poetry.lock pyproject.toml /app/
 
 WORKDIR /app/
 
-RUN pip3 install pipenv && \
-    pipenv install --ignore-pipfile
+RUN pip3 install poetry && \
+    poetry install --no-dev
 
-ENTRYPOINT [ "pipenv", "run", "--", "python", "server.py"]
+ENTRYPOINT [ "poetry", "run", "--", "python", "main.py"]

@@ -1,11 +1,17 @@
-from resources import config, auth
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 
+# PyPi modules
+import requests
+from fastapi import HTTPException
 
-def getHouseholds():
-    uri = config.ENDPOINT + "/api/household"
+# Local modules
+from sureflap_api.modules import auth
+from sureflap_api.config import settings
+
+
+def getHouseholds() -> str:
+    uri = f"{settings.ENDPOINT}/api/household"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -18,8 +24,8 @@ def getHouseholds():
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getHouseholdByID(id):
-    uri = config.ENDPOINT + "/api/household/" + str(id)
+def getHouseholdByID(id) -> str:
+    uri = f"{settings.ENDPOINT}/api/household/{id}"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['pets', 'users']}
