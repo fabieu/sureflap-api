@@ -1,11 +1,17 @@
-from resources import config, auth
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 
+# PyPi modules
+from fastapi import HTTPException
+import requests
 
-def getHouseholds():
-    uri = config.ENDPOINT + "/api/household"
+# Local modules
+from sureflap_api.modules import auth
+from sureflap_api.config import settings
+
+
+def get_devices() -> dict:
+    uri = f"{settings.ENDPOINT}/api/device"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -18,11 +24,11 @@ def getHouseholds():
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getHouseholdByID(id):
-    uri = config.ENDPOINT + "/api/household/" + str(id)
+def get_devices_by_id(device_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
-    payload = {'with[]': ['pets', 'users']}
+    payload = {'with[]': ['children', 'status', 'control']}
 
     response = requests.get(uri, headers=headers, params=payload)
 
