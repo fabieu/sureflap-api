@@ -92,7 +92,7 @@ class User(BaseModel):
     last_name: Optional[str] = None
     marketing_opt_in: Optional[bool] = None
     notifications: Optional[Notifications] = None
-    terms_accepted: Optional[bool] = None
+    terms_accepted: Optional[datetime] = None
     time_format: Optional[float] = None
     updated_at: Optional[str] = None
     version: Optional[str] = None
