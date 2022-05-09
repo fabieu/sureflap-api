@@ -24,72 +24,72 @@ def root():
 
 
 # Dashboard
-@app.get('/dashboard', response_model=response_models.Dashboard)
+@app.get('/dashboard', response_model=response_models.Dashboard, tags=["Summary"])
 def get_dashboard():
-    return dashboard.getDashboard()
+    return dashboard.get_dashboard()
 
 
-@app.get('/devices', response_model=Sequence[Union[response_models.HubShort, response_models.FlapShort]])
+@app.get('/devices', response_model=Sequence[Union[response_models.HubShort, response_models.FlapShort]], tags=["Device"])
 def get_devices():
-    return devices.getDevices()
+    return devices.get_devices()
 
 
-@app.get('/devices/{id}', response_model=Union[response_models.Hub, response_models.Flap])
-def get_device_by_ID(id: int):
-    return devices.getDeviceByID(id)
+@app.get('/devices/{device_id}', response_model=Union[response_models.Hub, response_models.Flap], tags=["Device"])
+def get_device_by_id(device_id: int):
+    return devices.get_devices_by_id(device_id)
 
 
 # Households
-@app.get('/households', response_model=Sequence[response_models.HouseholdShort])
+@app.get('/households', response_model=Sequence[response_models.HouseholdShort], tags=["Household"])
 def get_households():
-    return households.getHouseholds()
+    return households.get_households()
 
 
-@app.get('/households/{householdID}', response_model=response_models.Household)
-def get_household_by_ID(householdID: int):
-    return households.getHouseholdByID(householdID)
+@app.get('/households/{household_id}', response_model=response_models.Household, tags=["Household"])
+def get_household_by_id(household_id: int):
+    return households.get_household_by_id(household_id)
 
 
 # Pets
-@app.get('/households/{householdID}/pets', response_model=Sequence[response_models.PetShort])
-def get_pets_from_household(householdID: int):
-    return pets.getPetsFromHousehold(householdID)
+@app.get('/households/{household_id}/pets', response_model=Sequence[response_models.PetShort], tags=["Pet"])
+def get_pets_from_household(household_id: int):
+    return pets.get_pets_from_household(household_id)
 
 
-@app.get('/households/{householdID}/pets/{petID}', response_model=response_models.Pet)
-def get_pet(householdID: int, petID: int):
-    return pets.getPet(householdID, petID)
+@app.get('/households/{household_id}/pets/{pet_id}/location', response_model=response_models.PetLocation, tags=["Pet"])
+def get_pet_location(household_id: int, pet_id: int):
+    return pets.get_pet_location(pet_id)
 
 
-@app.get('/households/{householdID}/pets/{petID}/location', response_model=response_models.PetLocation)
-def get_pet_location(householdID: int, petID: int):
-    return pets.getPetLocation(petID)
+@app.post('/households/{household_id}/pets/{pet_id}/location', response_model=response_models.PetLocationUpdate, tags=["Pet"])
+def set_pet_location(household_id: int, pet_id: int, payload: request_models.PetLocationSet):
+    return pets.set_pet_location(pet_id, payload)
 
 
-@app.post('/households/{householdID}/pets/{petID}/location', response_model=response_models.PetLocationUpdate)
-def set_pet_location(householdID: int, petID: int, payload: request_models.PetLocationSet):
-    return pets.setPetLocation(petID, payload)
+@app.get('/households/{household_id}/pets/location', response_model=Sequence[response_models.PetLocations], tags=["Pet"])
+def get_pets_locations(household_id: int):
+    return pets.get_pets_location(household_id)
 
 
-@app.get('/households/{householdID}/pets/location', response_model=Sequence[response_models.PetLocations])
-def get_pets_locations(householdID: int):
-    return pets.getPetsLocations(householdID)
+@app.get('/households/{household_id}/pets/{pet_id}', response_model=response_models.Pet, tags=["Pet"])
+def get_pet(household_id: int, pet_id: int):
+    return pets.get_pet(household_id, pet_id)
 
 
 # Users
-@app.get('/households/{householdID}/users', response_model=Sequence[response_models.UserShort])
-def get_users_from_household(householdID: int):
-    return users.getUsersFromHousehold(householdID)
+@app.get('/households/{household_id}/users', response_model=Sequence[response_models.UserShort], tags=["User"])
+def get_users_from_household(household_id: int):
+    return users.get_users_from_household(household_id)
 
 
-@app.get('/households/{householdID}/users/{userID}', response_model=response_models.User)
-def get_user(householdID: int, userID: int):
-    return users.getUser(userID)
+@app.get('/households/{household_id}/users/{user_id}', response_model=response_models.User, tags=["User"], deprecated=True)
+def get_user(household_id: int, user_id: int):
+    return users.get_user(user_id)
 
 
-@app.get('/households/{householdID}/users/{userID}/photo', response_model=response_models.Photo)
-def get_user_photo(householdID: int, userID: int):
-    return users.getUserPhoto(userID)
+@app.get('/households/{household_id}/users/{user_id}/photo', response_model=response_models.Photo, tags=["User"], deprecated=True)
+def get_user_photo(household_id: int, user_id: int):
+    return users.get_user_photo(user_id)
 
 
 def init_FastAPI():
@@ -113,7 +113,7 @@ def custom_openapi():
     openapi_schema = get_openapi(
         title="Unofficial SureFlap API",
         version=__version__,
-        description="SureFlap API is a standalone RESTful API for products from [Sure Petcare](https://www.surepetcare.com). The main functionality of this API is to provide a wrapper for the official SureFlap API for maintainability, simplicity and connectivity. This enables a variety of IoT devices and other applications to connect to SureFlap devices more easily.",
+        description="SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).",
         routes=app.routes,
     )
     app.openapi_schema = openapi_schema

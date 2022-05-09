@@ -2,10 +2,10 @@
 name = "sureflap-api"
 version = "4.1.0"
 license = "Apache-2.0"
-description = "A standalone RESTful wrapper API for products from Sure Petcare"
+description = "SureFlap API is a simple, yet powerful RESTful API for products from Sure Petcare"
 authors = ["Fabian Eulitz <dev@sustineo.de>"]
 repository = "https://github.com/fabieu/sureflap-api"
-keywords = ["Sureflap", "API"]
+keywords = ["Sureflap", "Sure Petcare", "REST", "API"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

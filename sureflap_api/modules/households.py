@@ -10,7 +10,7 @@ from sureflap_api.modules import auth
 from sureflap_api.config import settings
 
 
-def getHouseholds() -> str:
+def get_households() -> list:
     uri = f"{settings.ENDPOINT}/api/household"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
@@ -24,8 +24,8 @@ def getHouseholds() -> str:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getHouseholdByID(id) -> str:
-    uri = f"{settings.ENDPOINT}/api/household/{id}"
+def get_household_by_id(household_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/household/{household_id}"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['pets', 'users']}

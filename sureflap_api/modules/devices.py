@@ -10,7 +10,7 @@ from sureflap_api.modules import auth
 from sureflap_api.config import settings
 
 
-def getDevices() -> str:
+def get_devices() -> dict:
     uri = f"{settings.ENDPOINT}/api/device"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
@@ -24,8 +24,8 @@ def getDevices() -> str:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getDeviceByID(id) -> str:
-    uri = f"{settings.ENDPOINT}/api/device/{id}"
+def get_devices_by_id(device_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['children', 'status', 'control']}

@@ -10,8 +10,8 @@ from sureflap_api.modules import auth
 from sureflap_api.config import settings
 
 
-def getUsersFromHousehold(householdID) -> str:
-    uri = f"{settings.ENDPOINT}/api/household/{householdID}/user"
+def get_users_from_household(household_id: int) -> list:
+    uri = f"{settings.ENDPOINT}/api/household/{household_id}/user"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -24,8 +24,9 @@ def getUsersFromHousehold(householdID) -> str:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getUser(userID) -> str:
-    uri = f"{settings.ENDPOINT}/api/user/{userID}"
+@DeprecationWarning
+def get_user(user_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/user/{user_id}"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -38,8 +39,9 @@ def getUser(userID) -> str:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getUserPhoto(userID) -> str:
-    userUri = f"{settings.ENDPOINT}/api/user/{userID}"
+@DeprecationWarning
+def get_user_photo(user_id: int) -> dict:
+    userUri = f"{settings.ENDPOINT}/api/user/{user_id}"
     photoUri = f"{settings.ENDPOINT}/api/photo/"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}

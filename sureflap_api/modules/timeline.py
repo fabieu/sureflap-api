@@ -11,8 +11,8 @@ from sureflap_api.modules import auth
 from sureflap_api.config import settings
 
 
-def getTimeline(householdID) -> str:
-    uri = f"{settings.ENDPOINT}/api/timeline/household/{householdID}"
+def getTimeline(household_id: int) -> str:
+    uri = f"{settings.ENDPOINT}/api/timeline/household/{household_id}"
     result = []
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}

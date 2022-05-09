@@ -13,7 +13,7 @@ settings = Dynaconf(
     load_dotenv=True,
     validators=[
         Validator('EMAIL', 'PASSWORD', must_exist=True),
-        Validator('LOGLEVEL', is_in=['critical', 'error', 'warning', 'info', 'debug', 'trace'], default="warning"),
+        Validator('LOGLEVEL', is_in=['critical', 'error', 'warning', 'info', 'debug', 'trace'], default="info"),
         Validator("ENDPOINT", default=ENDPOINT),
         Validator("PORT", default=PORT),
         Validator("CORS", default=None),

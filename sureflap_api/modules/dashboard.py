@@ -10,7 +10,7 @@ from sureflap_api.modules import auth
 from sureflap_api.config import settings
 
 
-def getDashboard() -> str:
+def get_dashboard() -> dict:
     uri = f"{settings.ENDPOINT}/api/me/start"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
