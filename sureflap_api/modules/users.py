@@ -1,25 +1,17 @@
-from resources import config, auth
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 
+# PyPi modules
+from fastapi import HTTPException
+import requests
 
-def getUsersFromHousehold(householdID):
-    uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/user"
-
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers)
-
-    if response.ok:
-        data = json.loads(response.text)
-        return data['data']
-    else:
-        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+# Local modules
+from sureflap_api.modules import auth
+from sureflap_api.config import settings
 
 
-def getUser(userID):
-    uri = config.ENDPOINT + "/api/user/" + str(userID)
+def get_users_from_household(household_id: int) -> list:
+    uri = f"{settings.ENDPOINT}/api/household/{household_id}/user"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -32,9 +24,25 @@ def getUser(userID):
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getUserPhoto(userID):
-    userUri = config.ENDPOINT + "/api/user/" + str(userID)
-    photoUri = config.ENDPOINT + "/api/photo/"
+@DeprecationWarning
+def get_user(user_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/user/{user_id}"
+
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
+
+    response = requests.get(uri, headers=headers)
+
+    if response.ok:
+        data = json.loads(response.text)
+        return data['data']
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+
+@DeprecationWarning
+def get_user_photo(user_id: int) -> dict:
+    userUri = f"{settings.ENDPOINT}/api/user/{user_id}"
+    photoUri = f"{settings.ENDPOINT}/api/photo/"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 

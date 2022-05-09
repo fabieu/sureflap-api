@@ -1,27 +1,27 @@
-from resources import config
-import requests
+# Built-in modules
 import random
 import json
+
+# PyPi modules
+import requests
 from cachetools import TTLCache
 from fastapi import HTTPException
+
+# Local modules
+from sureflap_api.config import settings
 
 cache = TTLCache(maxsize=128, ttl=86400)
 
 
-def getToken():
-    try:
-        _ = cache["token"]
-    except KeyError:
-        cache["token"] = None
-
-    if cache["token"] is not None:
-        return cache["token"]
+def getToken() -> str:
+    if cache.get("token"):
+        return cache.get("token")
     else:
-        uri = config.ENDPOINT + "/api/auth/login"
+        uri = f"{settings.ENDPOINT}/api/auth/login"
 
         payload = {
-            "email_address": config.EMAIL,
-            "password": config.PASSWORD,
+            "email_address": settings.EMAIL,
+            "password": settings.PASSWORD,
             "device_id": random.randrange(1000000000, 9999999999)
         }
 
@@ -31,6 +31,6 @@ def getToken():
             data = json.loads(response.text)['data']
             cache["token"] = data['token']
 
-            return data["token"]
+            return cache["token"]
         else:
             raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))

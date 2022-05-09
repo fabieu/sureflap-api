@@ -1,12 +1,18 @@
-from resources import config, auth
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 import math
 
+# PyPi modules
+from fastapi import HTTPException
+import requests
 
-def getTimeline(householdID):
-    uri = config.ENDPOINT + "/api/timeline/household/" + str(householdID)
+# Local modules
+from sureflap_api.modules import auth
+from sureflap_api.config import settings
+
+
+def getTimeline(household_id: int) -> str:
+    uri = f"{settings.ENDPOINT}/api/timeline/household/{household_id}"
     result = []
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}

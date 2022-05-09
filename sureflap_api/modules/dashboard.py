@@ -1,11 +1,17 @@
-from resources import config, auth
-from fastapi import HTTPException
-import requests
+# Bulit-in modules
 import json
 
+# PyPi modules
+from fastapi import HTTPException
+import requests
 
-def getDashboard():
-    uri = config.ENDPOINT + "/api/me/start"
+# Local modules
+from sureflap_api.modules import auth
+from sureflap_api.config import settings
+
+
+def get_dashboard() -> dict:
+    uri = f"{settings.ENDPOINT}/api/me/start"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 

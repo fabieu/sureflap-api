@@ -1,12 +1,18 @@
-from resources import config, auth, devices
+# Bulit-in modules
+import json
+from datetime import datetime, timedelta, timezone
+
+# PyPi modules
 from fastapi import HTTPException
 import requests
-import json
-from datetime import datetime, timezone
+
+# Local modules
+from sureflap_api.modules import auth, request_models
+from sureflap_api.config import settings
 
 
-def getPetsFromHousehold(householdID):
-    uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/pet"
+def get_pets_from_household(household_id: int) -> list:
+    uri = f"{settings.ENDPOINT}/api/household/{household_id}/pet"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -19,8 +25,8 @@ def getPetsFromHousehold(householdID):
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getPet(householdID, petID):
-    uri = config.ENDPOINT + "/api/household/" + str(householdID) + "/pet"
+def get_pet(household_id: int, pet_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/household/{household_id}/pet"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['photo', 'position']}
@@ -31,14 +37,14 @@ def getPet(householdID, petID):
         data = json.loads(response.text)
 
         for pet in data['data']:
-            if str(pet['id']) == str(petID):
+            if str(pet['id']) == str(pet_id):
                 return pet
     else:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getPetLocation(petID):
-    uri = config.ENDPOINT + "/api/pet/" + str(petID) + "/position"
+def get_pet_location(pet_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/pet/{pet_id}/position"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
@@ -50,12 +56,12 @@ def getPetLocation(petID):
         if data['data']['where'] == 1:
             petLocation = {
                 "pet_id": data['data']['pet_id'],
-                "location": "Inside"
+                "location": "inside"
             }
         else:
             petLocation = {
                 "pet_id": data['data']['pet_id'],
-                "location": "Outside"
+                "location": "outside"
             }
 
         return petLocation
@@ -63,48 +69,43 @@ def getPetLocation(petID):
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def getPetsLocations(householdID):
-    petInfo = []
-    flaps = []
+def get_pets_location(household_id: int) -> list:
     pets = []
+    petInfo = []
 
-    deviceList = devices.getDevices()
-    for device in deviceList:
-        if 'parent_device_id' in device:
-            flaps.append(device)
-
-    petList = getPetsFromHousehold(householdID)
-    for pet in petList:
-        pets.append(getPet(householdID, pet['id']))
+    for pet in get_pets_from_household(household_id):
+        pets.append(get_pet(household_id, pet['id']))
 
     for pet in pets:
         since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=timezone.utc)
         now = datetime.now(timezone.utc)
-        duration = str(now - since)
-        duration = duration[0:duration.index('.')]  # Remove milliseconds
+        duration = now - since
+
+        # Remove microseconds from timedelta object
+        duration = duration - timedelta(microseconds=duration.microseconds)
 
         if pet['position']['where'] == 1:
-            location = "Inside"
+            location = "inside"
         else:
-            location = "Outside"
+            location = "outside"
 
         petDict = {
             "name": pet['name'],
             "location": location,
             "since": since.strftime("%Y-%m-%dT%H:%M:%S+00:00"),
-            "duration": duration
+            "duration": str(duration)
         }
 
         petInfo.append(petDict)
     return petInfo
 
 
-def setPetLocation(petID, form):
-    uri = config.ENDPOINT + "/api/pet/" + str(petID) + "/position"
+def set_pet_location(pet_id: int, pet_location: request_models.PetLocationSet) -> dict:
+    uri = f"{settings.ENDPOINT}/api/pet/{pet_id}/position"
 
     headers = {'Authorization': f'Bearer {auth.getToken()}'}
     body = {
-        "where": form.where.value,  # 1 = inside, 2 = outside
+        "where": pet_location.where.value,  # 1 = inside, 2 = outside
         "since": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 

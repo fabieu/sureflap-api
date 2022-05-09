@@ -6,16 +6,16 @@ RUN apk add curl && \
     curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 
 
-FROM arm64v8/python:3.10-alpine
+FROM arm64v8/python:3.10-slim
 # Add QEMU
 COPY --from=qemu qemu-aarch64-static /usr/bin
 
-COPY Pipfile.lock /app/
-COPY sureflap /app/
+COPY sureflap_api /app/
+COPY poetry.lock pyproject.toml /app/
 
 WORKDIR /app/
 
-RUN pip3 install pipenv && \
-    pipenv install --ignore-pipfile
+RUN pip3 install poetry && \
+    poetry install --no-dev
 
-ENTRYPOINT [ "pipenv", "run", "--", "python", "server.py"]
+ENTRYPOINT [ "poetry", "run", "--", "python", "main.py"]
