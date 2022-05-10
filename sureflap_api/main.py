@@ -24,7 +24,7 @@ def root():
 
 
 # Dashboard
-@app.get('/dashboard', response_model=response_models.Dashboard, tags=["Summary"])
+@app.get('/dashboard', response_model=response_models.Dashboard, tags=["Dashboard"])
 def get_dashboard():
     return dashboard.get_dashboard()
 

@@ -1,3 +1,4 @@
-from importlib.metadata import version
+# Built-in modules
+from importlib import metadata
 
-__version__ = version("sureflap-api")
+__version__ = metadata.version(__package__)

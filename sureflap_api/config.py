@@ -9,7 +9,6 @@ PORT = 3001
 
 settings = Dynaconf(
     envvar_prefix="SUREFLAP",
-    settings_files=['settings.toml', '.secrets.toml'],
     load_dotenv=True,
     validators=[
         Validator('EMAIL', 'PASSWORD', must_exist=True),
