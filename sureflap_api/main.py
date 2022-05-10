@@ -1,7 +1,7 @@
 # Built-in modules
 
 # PyPi modules
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
@@ -37,6 +37,11 @@ def get_devices():
 @app.get('/devices/{device_id}', response_model=Union[response_models.Hub, response_models.Flap], tags=["Device"])
 def get_device_by_id(device_id: int):
     return devices.get_devices_by_id(device_id)
+
+
+@app.patch('/devices/{device_id}/control', response_model=response_models.FlapControl, tags=["Device"])
+def set_device_lock_mode(device_id: int, lock_mode: str = Query(..., enum=["in", "out", "both", "none"])):
+    return devices.set_lock_mode(device_id, lock_mode)
 
 
 # Households
@@ -129,7 +134,7 @@ def main():
     init_FastAPI()
 
     # Run ASGI server
-    uvicorn.run("main:app", port=settings.PORT, host="0.0.0.0", log_level=settings.LOGLEVEL)
+    uvicorn.run("main:app", port=settings.PORT, host="0.0.0.0", log_level=settings.LOGLEVEL, reload=settings.DEBUG)
 
 
 if __name__ == '__main__':
