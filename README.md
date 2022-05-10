@@ -2,11 +2,16 @@
   <img width="256" heigth="256" src="https://github.com/fabieu/sureflap-api/raw/main/assets/logo.png" alt="logo">
 </div>
 
-![Docker Pulls](https://img.shields.io/docker/pulls/fabieu/sureflap-api) ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/fabieu/sureflap-api) ![GitHub last commit](https://img.shields.io/github/last-commit/fabieu/sureflap-api) [![GitHub issues](https://img.shields.io/github/issues/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/issues) [![GitHub license](https://img.shields.io/github/license/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/blob/main/LICENSE)
+[![Docker Pulls](https://img.shields.io/docker/pulls/fabieu/sureflap-api)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/fabieu/sureflap-api?sort=semver)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/fabieu/sureflap-api)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
+[![GitHub issues](https://img.shields.io/github/issues/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/issues)
+[![GitHub license](https://img.shields.io/github/license/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/blob/main/LICENSE)
+![GitHub last commit](https://img.shields.io/github/last-commit/fabieu/sureflap-api)
 
 # SureFlap API
 
-SureFlap API is a standalone RESTful wrapper API for products from [Sure Petcare](https://www.surepetcare.com).
+SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).
 
 # Install
 
@@ -30,18 +35,18 @@ git clone https://github.com/fabieu/sureflap-api.git
 cd ./sureflap-api/sureflap
 ```
 
-This project utilizes **Pipenv**, a production-ready tool that aims to bring the best of all packaging worlds to the Python world. It harnesses Pipfile, pip, and virtualenv into one single command. You can read more about Pipenv [here](https://pipenv-fork.readthedocs.io/en/latest/).
+This project utilizes **Poetry**, a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you (https://python-poetry.org/).
 
-Install pipenv via pip:
+Install poetry via pip:
 
 ```bash
-pip install --user pipenv
+pip install --user poetry
 ```
 
 Installing required dependencies and move into the virtual environment created by Pipenv:
 
 ```bash
-pipenv install
+poetry install
 ```
 
 Set at least the required environment variables:
@@ -54,7 +59,7 @@ export SUREFLAP_PASSWORD={YOUR_SUREFLAP_PASSWORD}
 Start the integrated webserver with the following command:
 
 ```bash
-pipenv run python server.py
+poetry run python main.py
 ```
 
 > For all available options take a look at the [Configuration](#configuration) section.
@@ -73,7 +78,7 @@ Password of the in `SUREFLAP_EMAIL` specified _Sure Petcare_ account.
 
 ### `SUREFLAP_LOGLEVEL` (optional)
 
-> Default: warning
+> Default: info
 
 The `SUREFLAP_LOGLEVEL` option controls the level of log output and can be changed to be more or less verbose, which might be useful when you are dealing with an unknown issue.
 

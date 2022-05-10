@@ -1,4 +1,4 @@
-FROM alpine:3 AS qemu
+FROM alpine:3.15 AS qemu
 
 #QEMU Download
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v6.0.0%2Bbalena1/qemu-6.0.0.balena1-arm.tar.gz
@@ -6,7 +6,7 @@ RUN apk add curl && \
     curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 
 
-FROM arm32v7/python:3.10-slim
+FROM arm32v7/python:3.10-alpine3.15
 # Add QEMU
 COPY --from=qemu qemu-arm-static /usr/bin
 
@@ -15,7 +15,12 @@ COPY poetry.lock pyproject.toml /app/
 
 WORKDIR /app/
 
-RUN pip3 install poetry && \
-    poetry install --no-dev
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev libffi-dev rust cargo openssl-dev git && \
+    # Fix https://github.com/pyca/cryptography/issues/5771
+    mkdir -p ~/.cargo/ && echo -en '[net]\ngit-fetch-with-cli = true' > ~/.cargo/config.toml && \ 
+    pip3 install 'poetry>=1.1.0,<1.2.0' && \
+    apk del .build-deps
+
+RUN poetry install --no-dev
 
 ENTRYPOINT [ "poetry", "run", "--", "python", "main.py"]
