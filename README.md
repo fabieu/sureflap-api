@@ -7,11 +7,16 @@
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/fabieu/sureflap-api)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
 [![GitHub issues](https://img.shields.io/github/issues/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/issues)
 [![GitHub license](https://img.shields.io/github/license/fabieu/sureflap-api)](https://github.com/fabieu/sureflap-api/blob/main/LICENSE)
-![GitHub last commit](https://img.shields.io/github/last-commit/fabieu/sureflap-api)
 
 # SureFlap API
 
 SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).
+
+<div align="center">
+  <a href="https://fabieu.github.io/sureflap-api/" target="_blank" style="font-weight: bold;">
+    OpenAPI documentation
+  </a>
+</div>
 
 # Install
 
@@ -29,10 +34,6 @@ Clone this repository to your system and move into the sureflap project subfolde
 
 ```bash
 git clone https://github.com/fabieu/sureflap-api.git
-```
-
-```bash
-cd ./sureflap-api/sureflap
 ```
 
 This project utilizes **Poetry**, a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you (https://python-poetry.org/).
@@ -59,7 +60,7 @@ export SUREFLAP_PASSWORD={YOUR_SUREFLAP_PASSWORD}
 Start the integrated webserver with the following command:
 
 ```bash
-poetry run python main.py
+poetry run python .\sureflap_api\main.py
 ```
 
 > For all available options take a look at the [Configuration](#configuration) section.
@@ -103,7 +104,11 @@ Enables CORS (Cross-Origin Resource Sharing) for the specified domain names or i
 
 # Usage
 
-For details about the API endpoints take a look at the automatically generated OpenAPI Dokumentation at `http(s)://{IP_ADDRESS}:{PORT}/docs` or `http(s)://{IP_ADRESS}:{PORT}/redoc`. There you can find everything you need to know about the endpoints and how to call them correctly. I am going to add an external documentation in the future. For this I ask for a little patience.
+For details about all API endpoints and the corresponding request and response models take a look at the automatically generated OpenAPI documentation:
+
+- **https://fabieu.github.io/sureflap-api/**
+
+Here you will find everything you need to know about the available endpoints and how to call them.
 
 If you have additional questions feel free to open an issue here on GitHub.
 
