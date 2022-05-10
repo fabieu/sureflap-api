@@ -244,11 +244,13 @@ class FlapStatus(BaseModel):
 class Curfew(BaseModel):
     enabled: Optional[bool] = None
     lock_time: Optional[time] = None
+    unlock_time: Optional[time] = None
 
 
 class FlapControl(BaseModel):
     curfew: Optional[Curfew] = None
     fast_polling: Optional[bool] = None
+    locking: Optional[int] = None
 
 
 class Flap(BaseModel):
