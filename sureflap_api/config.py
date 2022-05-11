@@ -16,6 +16,7 @@ settings = Dynaconf(
         Validator("ENDPOINT", default=ENDPOINT),
         Validator("PORT", default=PORT),
         Validator("CORS", default=None),
+        Validator("DEBUG", default=False),
     ],
 )
 
