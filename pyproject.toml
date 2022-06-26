@@ -12,7 +12,7 @@ readme = "README.md"
 python = "^3.8"
 cachetools = "^5.2.0"
 fastapi = "^0.78.0"
-uvicorn = "^0.17.6"
+uvicorn = "^0.18.1"
 requests = "^2.27.1"
 dynaconf = "^3.1.8"
 
