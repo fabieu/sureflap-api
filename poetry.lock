@@ -186,8 +186,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-dev = ["pre-commit", "tox"]
-testing = ["pytest", "pytest-benchmark"]
+testing = ["pytest-benchmark", "pytest"]
+dev = ["tox", "pre-commit"]
 
 [[package]]
 name = "py"
@@ -348,7 +348,7 @@ standard = ["websockets (>=10.0)", "httptools (>=0.4.0)", "watchgod (>=0.6)", "p
 
 [[package]]
 name = "vermin"
-version = "1.3.3"
+version = "1.4.1"
 description = "Concurrently detect the minimum Python versions needed to run code"
 category = "dev"
 optional = false
@@ -357,7 +357,7 @@ python-versions = ">=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a7c21b6a8bc8ae7105ef69729d7c03970a174e165d92fbc52b645aa29eb21534"
+content-hash = "d68de4226d69395831e86b27dbfe6a0d457c69703a01060300d27d099f2ffa62"
 
 [metadata.files]
 anyio = [
@@ -514,5 +514,5 @@ uvicorn = [
     {file = "uvicorn-0.17.6.tar.gz", hash = "sha256:5180f9d059611747d841a4a4c4ab675edf54c8489e97f96d0583ee90ac3bfc23"},
 ]
 vermin = [
-    {file = "vermin-1.3.3-py2.py3-none-any.whl", hash = "sha256:c5bd8bf2026d87563332293a0479606954bd973d8cf72ab370e1164a019c0524"},
+    {file = "vermin-1.4.1-py2.py3-none-any.whl", hash = "sha256:e528e8d7d96bda8cb2df1015afd0b51cc1c97c285695c9d10d9df924c3f6352c"},
 ]
