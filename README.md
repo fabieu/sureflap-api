@@ -1,3 +1,6 @@
+# This project has been moved to GitLab
+See https://gitlab.com/fabieu-ci/sureflap-api
+
 <div align="center">
   <img width="256" heigth="256" src="https://github.com/fabieu/sureflap-api/raw/main/assets/logo.png" alt="logo">
 </div>
