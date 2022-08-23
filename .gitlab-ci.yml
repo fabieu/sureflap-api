@@ -123,6 +123,21 @@ multiarch-manifest:
     - chmod +x manifest-tool
     - ./manifest-tool push from-spec multi-arch-manifest.yaml
 
+pages:
+  stage: release
+  rules:
+    - !reference [.latest, rules]
+  needs: []
+  image: python:3.10-alpine
+  before_script:
+    - pip install poetry==1.1.15
+    - poetry install --no-dev
+  script:
+    - poetry run python ./docs/export_openapi.py
+  artifacts:
+    paths:
+      - public
+
 create-release:
   stage: release
   rules:
