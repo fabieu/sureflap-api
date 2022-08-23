@@ -114,7 +114,7 @@ multiarch-manifest:
   stage: build
   rules:
     - !reference [.latest, rules]
-  needs: ["docker-build-amd64", "docker-build-arm64"]
+  needs: ["docker-build-amd64", "docker-build-arm32", "docker-build-arm64"]
   before_script:
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
