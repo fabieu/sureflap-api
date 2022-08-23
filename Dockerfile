@@ -1,12 +1,11 @@
-FROM python:3.10-alpine3.15
+FROM python:3.10-alpine3.16
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE 1
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV POETRY_VERSION=1.1.15
 
 RUN apk add --no-cache --virtual build-deps curl gcc musl-dev libffi-dev && \
-    curl -sSL https://install.python-poetry.org | python3 - --version 1.1.13 && \
+    curl -sSL https://install.python-poetry.org | python3 - && \
     apk del build-deps
 ENV PATH="${PATH}:/root/.local/bin"
 

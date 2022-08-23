@@ -1,4 +1,4 @@
-FROM alpine:3.15 AS qemu
+FROM alpine:3.16 AS qemu
 
 #QEMU Download
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v6.0.0%2Bbalena1/qemu-6.0.0.balena1-aarch64.tar.gz
@@ -6,17 +6,16 @@ RUN apk add curl && \
     curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 
 
-FROM arm64v8/python:3.10-alpine3.15
+FROM arm64v8/python:3.10-alpine3.16
 # Add QEMU
 COPY --from=qemu qemu-aarch64-static /usr/bin
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE 1
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV POETRY_VERSION=1.1.15
 
 RUN apk add --no-cache --virtual build-deps curl gcc musl-dev libffi-dev && \
-    curl -sSL https://install.python-poetry.org | python3 - --version 1.1.13 && \
+    curl -sSL https://install.python-poetry.org | python3 - && \
     apk del build-deps
 ENV PATH="${PATH}:/root/.local/bin"
 
