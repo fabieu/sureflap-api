@@ -24,7 +24,7 @@ SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petca
 ## Docker (recommended)
 
 ```bash
-docker run -d -p 8080:3001 -e SUREFLAP_EMAIL={YOUR_SUREFLAP_EMAIL} -e SUREFLAP_PASSWORD={YOUR_SUREFLAP_EMAIL} fabieu/sureflap-api:latest
+docker run -d -p 8080:3001 -e SUREFLAP_EMAIL='{YOUR_SUREFLAP_EMAIL}' -e SUREFLAP_PASSWORD='{YOUR_SUREFLAP_PASSWORD}' fabieu/sureflap-api:latest
 ```
 
 > For all available options take a look at the [Configuration](#configuration) section.
