@@ -128,10 +128,10 @@ pages:
   rules:
     - !reference [.latest, rules]
   needs: []
-  image: python:3.10-alpine
+  image: python:3.12-alpine
   before_script:
-    - pip install poetry==1.1.15
-    - poetry install --no-dev
+    - pip install poetry==1.7.1
+    - poetry install --only main
   script:
     - poetry run python ./docs/export_openapi.py
   artifacts:
