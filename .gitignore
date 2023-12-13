@@ -1,7 +1,7 @@
 ### Custom template
 # Configuration files
 .secrets.*
-config.ini
+.env
 openapi.json
 
 ### JetBrains template
