@@ -45,13 +45,14 @@ docker-build-amd64:
   needs:
     - job: prepare-environment
   variables:
-    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:$VERSION"
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:$VERSION-amd64"
+    DOCKERHUB_IMAGE_VERSION: "$CI_REGISTRY_IMAGE:$VERSION"
+    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:amd64"
+    DOCKERHUB_IMAGE_VERSION_ARCH: "$CI_REGISTRY_IMAGE:$VERSION-amd64"
   before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
-    - docker build --pull -f ./Dockerfile -t "$DOCKERHUB_IMAGE_ARCH" -t "$DOCKERHUB_IMAGE_TAG" .
+    - docker build --pull -f ./Dockerfile -t "$DOCKERHUB_IMAGE_VERSION" -t "$DOCKERHUB_IMAGE_ARCH" -t "$DOCKERHUB_IMAGE_VERSION_ARCH" .
     - docker push "$CI_REGISTRY_IMAGE" --all-tags
 
 docker-build-arm32:
@@ -59,13 +60,13 @@ docker-build-arm32:
   needs:
     - job: prepare-environment
   variables:
-    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:arm32"
-    DOCKERHUB_IMAGE_TAG_VERSION: "$CI_REGISTRY_IMAGE:$VERSION-arm32"
+    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:arm32"
+    DOCKERHUB_IMAGE_VERSION_ARCH: "$CI_REGISTRY_IMAGE:$VERSION-arm32"
   before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
-    - docker build --pull -f ./Dockerfile.arm32v7 -t "DOCKERHUB_IMAGE_TAG" -t "DOCKERHUB_IMAGE_TAG_VERSION" .
+    - docker build --pull -f ./Dockerfile.arm32v7 -t "$DOCKERHUB_IMAGE_ARCH" -t "$DOCKERHUB_IMAGE_VERSION_ARCH" .
     - docker push "$CI_REGISTRY_IMAGE" --all-tags
 
 docker-build-arm64:
@@ -73,13 +74,13 @@ docker-build-arm64:
   needs:
     - job: prepare-environment
   variables:
-    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:arm64"
-    DOCKERHUB_IMAGE_TAG_VERSION: "$CI_REGISTRY_IMAGE:$VERSION-arm64"
+    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:arm64"
+    DOCKERHUB_IMAGE_VERSION_ARCH: "$CI_REGISTRY_IMAGE:$VERSION-arm64"
   before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
-    - docker build --pull -f ./Dockerfile.arm64v8 -t "DOCKERHUB_IMAGE_TAG" -t "DOCKERHUB_IMAGE_TAG_VERSION" .
+    - docker build --pull -f ./Dockerfile.arm64v8 -t "$DOCKERHUB_IMAGE_ARCH" -t "$DOCKERHUB_IMAGE_VERSION_ARCH" .
     - - docker push "$CI_REGISTRY_IMAGE" --all-tags
 
 multiarch-manifest:
