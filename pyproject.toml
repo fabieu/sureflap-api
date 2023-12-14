@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sureflap-api"
-version = "4.2.1"
+version = "4.2.2"
 license = "Apache-2.0"
 description = "SureFlap API is a simple, yet powerful RESTful API for products from Sure Petcare"
 authors = ["Fabian Eulitz <dev@sustineo.de>"]
