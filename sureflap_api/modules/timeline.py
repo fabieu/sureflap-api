@@ -15,9 +15,7 @@ def getTimeline(household_id: int) -> str:
     uri = f"{settings.ENDPOINT}/api/timeline/household/{household_id}"
     result = []
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers, params={'page_size': 100})
+    response = requests.get(uri, headers=auth.auth_headers(), params={'page_size': 100})
 
     if response.ok:
         data = json.loads(response.text)

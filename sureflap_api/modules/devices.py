@@ -13,9 +13,7 @@ from sureflap_api.config import settings
 def get_devices() -> dict:
     uri = f"{settings.ENDPOINT}/api/device"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=auth.auth_headers())
 
     if response.ok:
         data = json.loads(response.text)
@@ -27,10 +25,9 @@ def get_devices() -> dict:
 def get_devices_by_id(device_id: int) -> dict:
     uri = f"{settings.ENDPOINT}/api/device/{device_id}"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['children', 'status', 'control']}
 
-    response = requests.get(uri, headers=headers, params=payload)
+    response = requests.get(uri, headers=auth.auth_headers(), params=payload)
 
     if response.ok:
         data = json.loads(response.text)
@@ -41,8 +38,6 @@ def get_devices_by_id(device_id: int) -> dict:
 
 def set_lock_mode(device_id: int, lock_mode: str) -> dict:
     uri = f"{settings.ENDPOINT}/api/device/{device_id}/control"
-
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
 
     # Set lock mode
     lock_mode_id = None
@@ -64,7 +59,7 @@ def set_lock_mode(device_id: int, lock_mode: str) -> dict:
         "locking": lock_mode_id
     }
 
-    response = requests.put(uri, headers=headers,  data=data)
+    response = requests.put(uri, headers=auth.auth_headers(),  data=data)
 
     if response.ok:
         data = json.loads(response.text)

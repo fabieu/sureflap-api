@@ -13,7 +13,7 @@ from sureflap_api.modules import devices, households, dashboard, pets, users, re
 from sureflap_api.config import settings
 from sureflap_api import __version__
 
-# FastAPI configration
+# FastAPI configuration
 app = FastAPI()
 
 

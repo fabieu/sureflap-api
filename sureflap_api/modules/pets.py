@@ -14,9 +14,7 @@ from sureflap_api.config import settings
 def get_pets_from_household(household_id: int) -> list:
     uri = f"{settings.ENDPOINT}/api/household/{household_id}/pet"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=auth.auth_headers())
 
     if response.ok:
         data = json.loads(response.text)
@@ -28,10 +26,9 @@ def get_pets_from_household(household_id: int) -> list:
 def get_pet(household_id: int, pet_id: int) -> dict:
     uri = f"{settings.ENDPOINT}/api/household/{household_id}/pet"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
     payload = {'with[]': ['photo', 'position']}
 
-    response = requests.get(uri, headers=headers, params=payload)
+    response = requests.get(uri, headers=auth.auth_headers(), params=payload)
 
     if response.ok:
         data = json.loads(response.text)
@@ -46,9 +43,7 @@ def get_pet(household_id: int, pet_id: int) -> dict:
 def get_pet_location(pet_id: int) -> dict:
     uri = f"{settings.ENDPOINT}/api/pet/{pet_id}/position"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=auth.auth_headers())
 
     if response.ok:
         data = json.loads(response.text)
@@ -103,13 +98,12 @@ def get_pets_location(household_id: int) -> list:
 def set_pet_location(pet_id: int, pet_location: request_models.PetLocationSet) -> dict:
     uri = f"{settings.ENDPOINT}/api/pet/{pet_id}/position"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
     body = {
         "where": pet_location.where.value,  # 1 = inside, 2 = outside
         "since": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 
-    response = requests.post(uri, headers=headers, data=body)
+    response = requests.post(uri, headers=auth.auth_headers(), data=body)
 
     if response.ok:
         data = json.loads(response.text)

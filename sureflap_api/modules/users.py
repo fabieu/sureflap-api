@@ -13,9 +13,7 @@ from sureflap_api.config import settings
 def get_users_from_household(household_id: int) -> list:
     uri = f"{settings.ENDPOINT}/api/household/{household_id}/user"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=auth.auth_headers())
 
     if response.ok:
         data = json.loads(response.text)
@@ -28,9 +26,7 @@ def get_users_from_household(household_id: int) -> list:
 def get_user(user_id: int) -> dict:
     uri = f"{settings.ENDPOINT}/api/user/{user_id}"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(uri, headers=headers)
+    response = requests.get(uri, headers=auth.auth_headers())
 
     if response.ok:
         data = json.loads(response.text)
@@ -44,9 +40,7 @@ def get_user_photo(user_id: int) -> dict:
     userUri = f"{settings.ENDPOINT}/api/user/{user_id}"
     photoUri = f"{settings.ENDPOINT}/api/photo/"
 
-    headers = {'Authorization': f'Bearer {auth.getToken()}'}
-
-    response = requests.get(userUri, headers=headers)
+    response = requests.get(userUri, headers=auth.auth_headers())
 
     if response.ok:
         data = json.loads(response.text)

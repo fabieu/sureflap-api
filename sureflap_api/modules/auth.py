@@ -1,5 +1,5 @@
 # Built-in modules
-import random
+from uuid import uuid1
 import json
 
 # PyPi modules
@@ -13,7 +13,28 @@ from sureflap_api.config import settings
 cache = TTLCache(maxsize=128, ttl=86400)
 
 
-def getToken() -> str:
+def default_headers() -> dict[str, str]:
+    return {
+        "Host": "app.api.surehub.io",
+        "Connection": "keep-alive",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "en-US,en-GB;q=0.9",
+        "Content-Type": "application/json",
+        "Origin": "https://surepetcare.io",
+        "Referer": "https://surepetcare.io",
+        "X-Requested-With": "com.sureflap.surepetcare",
+        "X-Device-Id": str(uuid1()),
+    }
+
+
+def auth_headers() -> dict[str, str]:
+    return default_headers() | {
+        "Authorization": f"Bearer {get_token()}",
+    }
+
+
+def get_token() -> str:
     if cache.get("token"):
         return cache.get("token")
     else:
@@ -22,10 +43,10 @@ def getToken() -> str:
         payload = {
             "email_address": settings.EMAIL,
             "password": settings.PASSWORD,
-            "device_id": random.randrange(1000000000, 9999999999)
+            "device_id": str(uuid1()),
         }
 
-        response = requests.post(uri, data=payload)
+        response = requests.post(uri, json=payload, headers=default_headers())
 
         if response.ok:
             data = json.loads(response.text)['data']

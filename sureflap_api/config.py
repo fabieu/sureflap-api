@@ -2,7 +2,7 @@
 from dynaconf import Dynaconf, Validator
 
 # Default configuration variables
-ENDPOINT = "https://app.api.surehub.io"
+ENDPOINT = "https://app-api.production.surehub.io"
 LOGLEVEL = "warning"
 PORT = 3001
 
