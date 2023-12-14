@@ -17,8 +17,9 @@ ENV POETRY_VERSION=1.7.1
 RUN apk add --no-cache --virtual .build-deps curl gcc musl-dev libffi-dev rust cargo openssl-dev git && \
     # Fix https://github.com/pyca/cryptography/issues/5771
     mkdir -p ~/.cargo/ && echo -en '[net]\ngit-fetch-with-cli = true' > ~/.cargo/config.toml && \
-    apk del .build-deps && \
-    pip install poetry==$POETRY_VERSION
+    pip install poetry==$POETRY_VERSION && \
+    apk del .build-deps
+
 ENV PATH="${PATH}:/root/.local/bin"
 
 WORKDIR /usr/src/app/
