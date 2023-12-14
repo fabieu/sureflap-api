@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 ENV POETRY_VERSION=1.7.1
 
 RUN apk add --no-cache --virtual build-deps curl gcc musl-dev libffi-dev && \
-    pip install poetry==$POETRY_VERSION && \
+    pip install --upgrade pip poetry==$POETRY_VERSION && \
     apk del build-deps
 
 ENV PATH="${PATH}:/root/.local/bin"

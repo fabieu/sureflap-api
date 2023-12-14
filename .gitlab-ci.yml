@@ -1,4 +1,5 @@
 stages:
+  - prepare
   - build
   - release
 
@@ -7,50 +8,45 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "api"'
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       changes:
-        - sureflap_api/**/*
-        - Dockerfile
-        - Dockerfile.*
-    - if: '$CI_COMMIT_TAG =~ /^\d+.\d+.\d+/'
+        - pyproject.toml
 
 variables:
   CI_REGISTRY: "docker.io"
   CI_REGISTRY_IMAGE: "fabieu/sureflap-api"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  POETRY_VERSION: "1.7.1"
 
 default:
-  tags:
-    - gitlab-org-docker
   image: docker:20.10
   services:
     - docker:20.10-dind
+  tags:
+    - gitlab-org-docker
 
-.latest:
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-.tag:
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^\d+.\d+.\d+/
+prepare-environment:
+  stage: prepare
+  needs: []
+  image: python:3.12.1-alpine
+  before_script:
+    - pip install poetry==$POETRY_VERSION
+  script:
+    - echo "Expanding version as environment variable"
+    - echo "VERSION=$(poetry version -s)" > .env
+    - cat .env
+  cache:
+    paths:
+      - .cache/pip
+  artifacts:
+    reports:
+      dotenv: .env
 
 docker-build-amd64:
   stage: build
-  rules:
-    - !reference [.latest, rules]
+  needs:
+    - job: prepare-environment
   variables:
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:amd64"
-  before_script:
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
-  script:
-    - docker build --pull -f ./Dockerfile -t "$DOCKERHUB_IMAGE_ARCH" .
-    - docker push "$CI_REGISTRY_IMAGE" --all-tags
-
-docker-build-amd64-tag:
-  stage: build
-  rules:
-    - !reference [.tag, rules]
-  variables:
-    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-amd64"
+    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:$VERSION"
+    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:$VERSION-amd64"
   before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
@@ -60,61 +56,38 @@ docker-build-amd64-tag:
 
 docker-build-arm32:
   stage: build
-  rules:
-    - !reference [.latest, rules]
+  needs:
+    - job: prepare-environment
   variables:
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:arm32"
+    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:arm32"
+    DOCKERHUB_IMAGE_TAG_VERSION: "$CI_REGISTRY_IMAGE:$VERSION-arm32"
   before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
-    - docker build --pull -f ./Dockerfile.arm32v7 -t "$DOCKERHUB_IMAGE_ARCH" .
-    - - docker push "$CI_REGISTRY_IMAGE" --all-tags
-
-docker-build-arm32-tag:
-  stage: build
-  rules:
-    - !reference [.tag, rules]
-  variables:
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-arm32"
-  before_script:
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
-  script:
-    - docker build --pull -f ./Dockerfile.arm32v7 -t "$DOCKERHUB_IMAGE_ARCH" .
+    - docker build --pull -f ./Dockerfile.arm32v7 -t "DOCKERHUB_IMAGE_TAG" -t "DOCKERHUB_IMAGE_TAG_VERSION" .
     - docker push "$CI_REGISTRY_IMAGE" --all-tags
 
 docker-build-arm64:
   stage: build
-  rules:
-    - !reference [.latest, rules]
+  needs:
+    - job: prepare-environment
   variables:
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:arm64"
+    DOCKERHUB_IMAGE_TAG: "$CI_REGISTRY_IMAGE:arm64"
+    DOCKERHUB_IMAGE_TAG_VERSION: "$CI_REGISTRY_IMAGE:$VERSION-arm64"
   before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
-    - docker build --pull -f ./Dockerfile.arm64v8 -t "$DOCKERHUB_IMAGE_ARCH" .
+    - docker build --pull -f ./Dockerfile.arm64v8 -t "DOCKERHUB_IMAGE_TAG" -t "DOCKERHUB_IMAGE_TAG_VERSION" .
     - - docker push "$CI_REGISTRY_IMAGE" --all-tags
-
-docker-build-arm64-tag:
-  stage: build
-  rules:
-    - !reference [.tag, rules]
-  variables:
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG-arm64"
-  before_script:
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
-  script:
-    - docker build --pull -f ./Dockerfile.arm64v8 -t "$DOCKERHUB_IMAGE_ARCH" .
-    - docker push "$CI_REGISTRY_IMAGE" --all-tags
 
 multiarch-manifest:
   stage: build
-  rules:
-    - !reference [.latest, rules]
-  needs: ["docker-build-amd64", "docker-build-arm32", "docker-build-arm64"]
+  needs:
+    - job: docker-build-amd64
+    - job: docker-build-arm32
+    - job: docker-build-arm64
   before_script:
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
   script:
@@ -125,14 +98,12 @@ multiarch-manifest:
 
 pages:
   stage: release
-  rules:
-    - !reference [.latest, rules]
   needs: []
-  image: python:3.12-alpine
+  image: python:3.12.1-alpine
   before_script:
-    - pip install poetry==1.7.1
-    - poetry install --only main
+    - pip install poetry==$POETRY_VERSION
   script:
+    - poetry install --only main
     - poetry run python ./docs/export_openapi.py
   artifacts:
     paths:
@@ -140,14 +111,13 @@ pages:
 
 create-release:
   stage: release
-  rules:
-    - !reference [.tag, rules]
-  needs: ["docker-build-amd64-tag", "docker-build-arm32-tag", "docker-build-arm64-tag"]
+  needs:
+    - job: multiarch-manifest
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
-    - echo 'Creating release for version $CI_COMMIT_TAG'
+    - echo 'Creating release for version $VERSION'
   release:
-    name: "Release $CI_COMMIT_TAG"
-    tag_name: "$CI_COMMIT_TAG"
+    name: "Release $VERSION"
+    tag_name: "$VERSION"
     description: "$CI_COMMIT_MESSAGE"
   allow_failure: true
