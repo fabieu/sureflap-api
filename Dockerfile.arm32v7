@@ -14,9 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV POETRY_VERSION=1.7.1
 
-RUN apk add --no-cache --virtual .build-deps curl gcc g++ musl-dev libffi-dev rust cargo openssl-dev git && \
-    # Fix https://github.com/pyca/cryptography/issues/5771
-    mkdir -p ~/.cargo/ && echo -en '[net]\ngit-fetch-with-cli = true' > ~/.cargo/config.toml && \
+RUN apk add --no-cache --virtual .build-deps curl gcc g++ musl-dev libffi-dev rust cargo openssl-dev && \
     pip install --upgrade pip poetry==$POETRY_VERSION && \
     apk del .build-deps
 
