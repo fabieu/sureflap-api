@@ -113,6 +113,7 @@ pages:
 create-release:
   stage: release
   needs:
+    - job: prepare-environment
     - job: multiarch-manifest
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
