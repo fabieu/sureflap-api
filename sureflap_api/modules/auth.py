@@ -1,6 +1,6 @@
 # Built-in modules
-from uuid import uuid1
 import json
+from uuid import uuid1
 
 # PyPi modules
 import requests
@@ -35,8 +35,10 @@ def auth_headers() -> dict[str, str]:
 
 
 def get_token() -> str:
-    if cache.get("token"):
-        return cache.get("token")
+    token = cache.get("token")
+
+    if token:
+        return token
     else:
         uri = f"{settings.ENDPOINT}/api/auth/login"
 

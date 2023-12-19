@@ -1,17 +1,14 @@
-# Built-in modules
-
-# PyPi modules
-from fastapi import FastAPI, Query
-from fastapi.openapi.utils import get_openapi
-from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import RedirectResponse
-import uvicorn
 from typing import Sequence, Union
 
-# Local modules
-from sureflap_api.modules import devices, households, dashboard, pets, users, response_models, request_models
-from sureflap_api.config import settings
+import uvicorn
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
+from starlette.responses import RedirectResponse
+
 from sureflap_api import __version__
+from sureflap_api.config import settings
+from sureflap_api.modules import devices, households, dashboard, pets, users, response_models, request_models
 
 # FastAPI configuration
 app = FastAPI()
@@ -29,7 +26,8 @@ def get_dashboard():
     return dashboard.get_dashboard()
 
 
-@app.get('/devices', response_model=Sequence[Union[response_models.HubShort, response_models.FlapShort]], tags=["Device"])
+@app.get('/devices', response_model=Sequence[Union[response_models.HubShort, response_models.FlapShort]],
+         tags=["Device"])
 def get_devices():
     return devices.get_devices()
 
@@ -66,12 +64,14 @@ def get_pet_location(household_id: int, pet_id: int):
     return pets.get_pet_location(pet_id)
 
 
-@app.post('/households/{household_id}/pets/{pet_id}/location', response_model=response_models.PetLocationUpdate, tags=["Pet"])
+@app.post('/households/{household_id}/pets/{pet_id}/location', response_model=response_models.PetLocationUpdate,
+          tags=["Pet"])
 def set_pet_location(household_id: int, pet_id: int, payload: request_models.PetLocationSet):
     return pets.set_pet_location(pet_id, payload)
 
 
-@app.get('/households/{household_id}/pets/location', response_model=Sequence[response_models.PetLocations], tags=["Pet"])
+@app.get('/households/{household_id}/pets/location', response_model=Sequence[response_models.PetLocations],
+         tags=["Pet"])
 def get_pets_locations(household_id: int):
     return pets.get_pets_location(household_id)
 
@@ -87,31 +87,18 @@ def get_users_from_household(household_id: int):
     return users.get_users_from_household(household_id)
 
 
-@app.get('/households/{household_id}/users/{user_id}', response_model=response_models.User, tags=["User"], deprecated=True)
+@app.get('/households/{household_id}/users/{user_id}', response_model=response_models.User, tags=["User"],
+         deprecated=True)
 def get_user(household_id: int, user_id: int):
     return users.get_user(user_id)
 
 
-@app.get('/households/{household_id}/users/{user_id}/photo', response_model=response_models.Photo, tags=["User"], deprecated=True)
+@app.get('/households/{household_id}/users/{user_id}/photo', response_model=response_models.Photo, tags=["User"],
+         deprecated=True)
 def get_user_photo(household_id: int, user_id: int):
     return users.get_user_photo(user_id)
 
 
-def init_FastAPI():
-    # CORS Configuration
-    if settings.CORS:
-        origins = settings.CORS.split(",")
-
-        app.add_middleware(
-            CORSMiddleware,
-            allow_origins=origins,
-            allow_credentials=True,
-            allow_methods=["*"],
-            allow_headers=["*"],
-        )
-
-
-# Extending the automatically generated OpenAPI schema
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
@@ -122,18 +109,26 @@ def custom_openapi():
         routes=app.routes,
     )
     app.openapi_schema = openapi_schema
-
     return app.openapi_schema
 
 
-app.openapi = custom_openapi
+def configure_fastapi():
+    # Extend OpenAPI schema
+    app.openapi = custom_openapi
+
+    # CORS Configuration
+    if settings.CORS:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=settings.CORS.split(","),
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
 
 def main():
-    # Call method to configure FastAPI
-    init_FastAPI()
-
-    # Run ASGI server
+    configure_fastapi()
     uvicorn.run("main:app", port=settings.PORT, host="0.0.0.0", log_level=settings.LOGLEVEL, reload=settings.DEBUG)
 
 

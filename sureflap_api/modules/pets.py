@@ -1,14 +1,11 @@
-# Bulit-in modules
 import json
 from datetime import datetime, timedelta, timezone
 
-# PyPi modules
-from fastapi import HTTPException
 import requests
+from fastapi import HTTPException
 
-# Local modules
-from sureflap_api.modules import auth, request_models
 from sureflap_api.config import settings
+from sureflap_api.modules import auth, request_models
 
 
 def get_pets_from_household(household_id: int) -> list:

@@ -1,13 +1,10 @@
-# Bulit-in modules
 import json
 
-# PyPi modules
-from fastapi import HTTPException
 import requests
+from fastapi import HTTPException
 
-# Local modules
-from sureflap_api.modules import auth
 from sureflap_api.config import settings
+from sureflap_api.modules import auth
 
 
 def get_devices() -> dict:
@@ -59,7 +56,7 @@ def set_lock_mode(device_id: int, lock_mode: str) -> dict:
         "locking": lock_mode_id
     }
 
-    response = requests.put(uri, headers=auth.auth_headers(),  data=data)
+    response = requests.put(uri, headers=auth.auth_headers(), data=data)
 
     if response.ok:
         data = json.loads(response.text)

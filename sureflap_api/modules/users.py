@@ -1,13 +1,10 @@
-# Bulit-in modules
 import json
 
-# PyPi modules
-from fastapi import HTTPException
 import requests
+from fastapi import HTTPException
 
-# Local modules
-from sureflap_api.modules import auth
 from sureflap_api.config import settings
+from sureflap_api.modules import auth
 
 
 def get_users_from_household(household_id: int) -> list:

@@ -1,12 +1,7 @@
-
-# Bulit-in modules
 from datetime import datetime, time
 from typing import Optional, Sequence, Union
+
 from pydantic import BaseModel
-
-# PyPi modules
-
-# Local modules
 
 
 # Multi-referenced models

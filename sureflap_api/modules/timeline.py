@@ -1,14 +1,11 @@
-# Bulit-in modules
 import json
 import math
 
-# PyPi modules
-from fastapi import HTTPException
 import requests
+from fastapi import HTTPException
 
-# Local modules
-from sureflap_api.modules import auth
 from sureflap_api.config import settings
+from sureflap_api.modules import auth
 
 
 def getTimeline(household_id: int) -> str:
@@ -24,7 +21,7 @@ def getTimeline(household_id: int) -> str:
 
         requestCount = math.ceil(count / pageSize)
 
-        for i in range(1, requestCount+1):
+        for i in range(1, requestCount + 1):
             payload = {'page_size': 1000, 'page': i}
             response2 = requests.get(uri, headers=headers, params=payload)
 
