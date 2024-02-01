@@ -12,9 +12,11 @@ ENV PATH="${PATH}:/root/.local/bin"
 
 WORKDIR /usr/src/app/
 COPY sureflap_api ./sureflap_api
-COPY poetry.lock pyproject.toml README.md ./
+COPY poetry.lock pyproject.toml ./
 
 RUN poetry config virtualenvs.create false &&\
     poetry install --no-interaction --no-ansi --only main
+
+EXPOSE 3001
 
 ENTRYPOINT ["python", "sureflap_api/main.py"]

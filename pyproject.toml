@@ -6,7 +6,6 @@ description = "SureFlap API is a simple, yet powerful RESTful API for products f
 authors = ["Fabian Eulitz <dev@sustineo.de>"]
 repository = "https://github.com/fabieu/sureflap-api"
 keywords = ["Sureflap", "Sure Petcare", "REST", "API"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10,<4.0"
