@@ -9,7 +9,7 @@ from sureflap_api.modules import auth
 
 
 def getTimeline(household_id: int) -> str:
-    uri = f"{settings.ENDPOINT}/api/timeline/household/{household_id}"
+    uri = f"{settings.endpoint}/api/timeline/household/{household_id}"
     result = []
 
     response = requests.get(uri, headers=auth.auth_headers(), params={'page_size': 100})

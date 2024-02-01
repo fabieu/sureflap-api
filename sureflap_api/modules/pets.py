@@ -9,7 +9,7 @@ from sureflap_api.modules import auth, request_models
 
 
 def get_pets_from_household(household_id: int) -> list:
-    uri = f"{settings.ENDPOINT}/api/household/{household_id}/pet"
+    uri = f"{settings.endpoint}/api/household/{household_id}/pet"
 
     response = requests.get(uri, headers=auth.auth_headers())
 
@@ -21,7 +21,7 @@ def get_pets_from_household(household_id: int) -> list:
 
 
 def get_pet(household_id: int, pet_id: int) -> dict:
-    uri = f"{settings.ENDPOINT}/api/household/{household_id}/pet"
+    uri = f"{settings.endpoint}/api/household/{household_id}/pet"
 
     payload = {'with[]': ['photo', 'position']}
 
@@ -38,7 +38,7 @@ def get_pet(household_id: int, pet_id: int) -> dict:
 
 
 def get_pet_location(pet_id: int) -> dict:
-    uri = f"{settings.ENDPOINT}/api/pet/{pet_id}/position"
+    uri = f"{settings.endpoint}/api/pet/{pet_id}/position"
 
     response = requests.get(uri, headers=auth.auth_headers())
 
@@ -93,7 +93,7 @@ def get_pets_location(household_id: int) -> list:
 
 
 def set_pet_location(pet_id: int, pet_location: request_models.PetLocationSet) -> dict:
-    uri = f"{settings.ENDPOINT}/api/pet/{pet_id}/position"
+    uri = f"{settings.endpoint}/api/pet/{pet_id}/position"
 
     body = {
         "where": pet_location.where.value,  # 1 = inside, 2 = outside

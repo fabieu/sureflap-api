@@ -8,7 +8,7 @@ from sureflap_api.modules import auth
 
 
 def get_devices() -> dict:
-    uri = f"{settings.ENDPOINT}/api/device"
+    uri = f"{settings.endpoint}/api/device"
 
     response = requests.get(uri, headers=auth.auth_headers())
 
@@ -20,7 +20,7 @@ def get_devices() -> dict:
 
 
 def get_devices_by_id(device_id: int) -> dict:
-    uri = f"{settings.ENDPOINT}/api/device/{device_id}"
+    uri = f"{settings.endpoint}/api/device/{device_id}"
 
     payload = {'with[]': ['children', 'status', 'control']}
 
@@ -34,7 +34,7 @@ def get_devices_by_id(device_id: int) -> dict:
 
 
 def set_lock_mode(device_id: int, lock_mode: str) -> dict:
-    uri = f"{settings.ENDPOINT}/api/device/{device_id}/control"
+    uri = f"{settings.endpoint}/api/device/{device_id}/control"
 
     # Set lock mode
     lock_mode_id = None

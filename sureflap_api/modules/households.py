@@ -8,7 +8,7 @@ from sureflap_api.modules import auth
 
 
 def get_households() -> list:
-    uri = f"{settings.ENDPOINT}/api/household"
+    uri = f"{settings.endpoint}/api/household"
 
     response = requests.get(uri, headers=auth.auth_headers())
 
@@ -20,7 +20,7 @@ def get_households() -> list:
 
 
 def get_household_by_id(household_id: int) -> dict:
-    uri = f"{settings.ENDPOINT}/api/household/{household_id}"
+    uri = f"{settings.endpoint}/api/household/{household_id}"
 
     payload = {'with[]': ['pets', 'users']}
 

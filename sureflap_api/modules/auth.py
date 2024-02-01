@@ -40,11 +40,11 @@ def get_token() -> str:
     if token:
         return token
     else:
-        uri = f"{settings.ENDPOINT}/api/auth/login"
+        uri = f"{settings.endpoint}/api/auth/login"
 
         payload = {
-            "email_address": settings.EMAIL,
-            "password": settings.PASSWORD,
+            "email_address": settings.email,
+            "password": settings.password,
             "device_id": str(uuid1()),
         }
 

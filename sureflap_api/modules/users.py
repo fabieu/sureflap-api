@@ -8,7 +8,7 @@ from sureflap_api.modules import auth
 
 
 def get_users_from_household(household_id: int) -> list:
-    uri = f"{settings.ENDPOINT}/api/household/{household_id}/user"
+    uri = f"{settings.endpoint}/api/household/{household_id}/user"
 
     response = requests.get(uri, headers=auth.auth_headers())
 
@@ -21,7 +21,7 @@ def get_users_from_household(household_id: int) -> list:
 
 @DeprecationWarning
 def get_user(user_id: int) -> dict:
-    uri = f"{settings.ENDPOINT}/api/user/{user_id}"
+    uri = f"{settings.endpoint}/api/user/{user_id}"
 
     response = requests.get(uri, headers=auth.auth_headers())
 
@@ -34,8 +34,8 @@ def get_user(user_id: int) -> dict:
 
 @DeprecationWarning
 def get_user_photo(user_id: int) -> dict:
-    userUri = f"{settings.ENDPOINT}/api/user/{user_id}"
-    photoUri = f"{settings.ENDPOINT}/api/photo/"
+    userUri = f"{settings.endpoint}/api/user/{user_id}"
+    photoUri = f"{settings.endpoint}/api/photo/"
 
     response = requests.get(userUri, headers=auth.auth_headers())
 

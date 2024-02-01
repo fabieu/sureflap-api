@@ -8,7 +8,7 @@ from sureflap_api.modules import auth
 
 
 def get_dashboard() -> dict:
-    uri = f"{settings.ENDPOINT}/api/me/start"
+    uri = f"{settings.endpoint}/api/me/start"
 
     response = requests.get(uri, headers=auth.auth_headers())
 

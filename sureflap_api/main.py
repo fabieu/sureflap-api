@@ -117,10 +117,10 @@ def configure_fastapi():
     app.openapi = custom_openapi
 
     # CORS Configuration
-    if settings.CORS:
+    if settings.cors:
         app.add_middleware(
             CORSMiddleware,
-            allow_origins=settings.CORS.split(","),
+            allow_origins=settings.cors.split(","),
             allow_credentials=True,
             allow_methods=["*"],
             allow_headers=["*"],
@@ -129,7 +129,7 @@ def configure_fastapi():
 
 def main():
     configure_fastapi()
-    uvicorn.run("main:app", port=settings.PORT, host="0.0.0.0", log_level=settings.LOGLEVEL, reload=settings.DEBUG)
+    uvicorn.run("main:app", port=settings.port, host="0.0.0.0", log_level=settings.loglevel, reload=settings.debug)
 
 
 if __name__ == '__main__':
