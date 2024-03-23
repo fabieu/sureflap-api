@@ -55,20 +55,6 @@ docker-build-amd64:
     - docker build --pull -f ./Dockerfile -t "$DOCKERHUB_IMAGE_VERSION" -t "$DOCKERHUB_IMAGE_ARCH" -t "$DOCKERHUB_IMAGE_VERSION_ARCH" .
     - docker push "$CI_REGISTRY_IMAGE" --all-tags
 
-docker-build-arm32:
-  stage: build
-  needs:
-    - job: prepare-environment
-  variables:
-    DOCKERHUB_IMAGE_ARCH: "$CI_REGISTRY_IMAGE:arm32"
-    DOCKERHUB_IMAGE_VERSION_ARCH: "$CI_REGISTRY_IMAGE:$VERSION-arm32"
-  before_script:
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin
-  script:
-    - docker build --pull -f ./Dockerfile.arm32v7 -t "$DOCKERHUB_IMAGE_ARCH" -t "$DOCKERHUB_IMAGE_VERSION_ARCH" .
-    - docker push "$CI_REGISTRY_IMAGE" --all-tags
-
 docker-build-arm64:
   stage: build
   needs:
@@ -87,7 +73,6 @@ multiarch-manifest:
   stage: build
   needs:
     - job: docker-build-amd64
-    - job: docker-build-arm32
     - job: docker-build-arm64
   before_script:
     - echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER $CI_REGISTRY --password-stdin

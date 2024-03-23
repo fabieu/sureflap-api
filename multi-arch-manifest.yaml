@@ -9,8 +9,3 @@ manifests:
       architecture: arm64
       os: linux
       variant: v8
-  - image: fabieu/sureflap-api:arm32
-    platform:
-      architecture: arm
-      os: linux
-      variant: v7
