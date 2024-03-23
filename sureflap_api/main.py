@@ -3,15 +3,25 @@ from typing import Sequence, Union
 import uvicorn
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
+from typing_extensions import Annotated
 
 from sureflap_api import __version__
 from sureflap_api.config import settings
-from sureflap_api.modules import devices, households, dashboard, pets, users, response_models, request_models
+from sureflap_api.enums import LockMode
+from sureflap_api.models import response as response_models, request as request_models
+from sureflap_api.modules import devices, households, dashboard, pets, users
 
 # FastAPI configuration
-app = FastAPI()
+app = FastAPI(
+    title="Unofficial SureFlap API",
+    version=__version__,
+    description="SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).",
+    license_info={
+        "name": "Apache 2.0",
+        "identifier": "Apache-2.0",
+    }
+)
 
 
 # Redirect default url to docs
@@ -38,7 +48,12 @@ def get_device_by_id(device_id: int):
 
 
 @app.patch('/devices/{device_id}/control', response_model=response_models.FlapControl, tags=["Device"])
-def set_device_lock_mode(device_id: int, lock_mode: str = Query(..., enum=["in", "out", "both", "none"])):
+async def set_device_lock_mode(device_id: int, lock_mode: Annotated[LockMode, Query(
+    description="**none** = Pets can enter and leave the house \n\n"
+                "**out** = Pets can leave the house but can no longer enter it \n\n"
+                "**in** = Pets can enter the house but can no longer leave it \n\n"
+                "**both** = Pets can no longer enter and leave the house \n\n")
+]):
     return devices.set_lock_mode(device_id, lock_mode)
 
 
@@ -99,24 +114,8 @@ def get_user_photo(household_id: int, user_id: int):
     return users.get_user_photo(user_id)
 
 
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi(
-        title="Unofficial SureFlap API",
-        version=__version__,
-        description="SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).",
-        routes=app.routes,
-    )
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
-
-
-def configure_fastapi():
-    # Extend OpenAPI schema
-    app.openapi = custom_openapi
-
-    # CORS Configuration
+def main():
+    # CORS
     if settings.cors:
         app.add_middleware(
             CORSMiddleware,
@@ -126,9 +125,6 @@ def configure_fastapi():
             allow_headers=["*"],
         )
 
-
-def main():
-    configure_fastapi()
     uvicorn.run("main:app", port=settings.port, host="0.0.0.0", log_level=settings.loglevel, reload=settings.debug)
 
 

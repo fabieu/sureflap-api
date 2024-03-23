@@ -5,7 +5,8 @@ import requests
 from fastapi import HTTPException
 
 from sureflap_api.config import settings
-from sureflap_api.modules import auth, request_models
+from sureflap_api.models import request as request_models
+from sureflap_api.modules import auth
 
 
 def get_pets_from_household(household_id: int) -> list:
@@ -100,7 +101,7 @@ def set_pet_location(pet_id: int, pet_location: request_models.PetLocationSet) -
         "since": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
 
-    response = requests.post(uri, headers=auth.auth_headers(), data=body)
+    response = requests.post(uri, headers=auth.auth_headers(), json=body)
 
     if response.ok:
         data = json.loads(response.text)

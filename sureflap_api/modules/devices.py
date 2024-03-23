@@ -4,6 +4,7 @@ import requests
 from fastapi import HTTPException
 
 from sureflap_api.config import settings
+from sureflap_api.enums import LockMode
 from sureflap_api.modules import auth
 
 
@@ -33,30 +34,26 @@ def get_devices_by_id(device_id: int) -> dict:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def set_lock_mode(device_id: int, lock_mode: str) -> dict:
+def set_lock_mode(device_id: int, lock_mode: LockMode) -> dict:
     uri = f"{settings.endpoint}/api/device/{device_id}/control"
 
-    # Set lock mode
-    lock_mode_id = None
-
     match lock_mode:
-        case "in":
-            lock_mode_id = 2  # Pets can enter the house but can no longer leave it
-        case "out":
-            lock_mode_id = 1  # Pets can leave the house but can no longer enter it
-        case "both":
-            lock_mode_id = 3  # Pets can no longer enter and leave the house
-        case "none":
+        case LockMode.NONE:
             lock_mode_id = 0  # Pets can enter and leave the house
+        case LockMode.OUT:
+            lock_mode_id = 1  # Pets can leave the house but can no longer enter it
+        case LockMode.IN:
+            lock_mode_id = 2  # Pets can enter the house but can no longer leave it
+        case LockMode.BOTH:
+            lock_mode_id = 3  # Pets can no longer enter and leave the house
         case _:
-            raise HTTPException(
-                status_code=400, detail="Invalid lock mode - Only 'in', 'out', 'both' or 'none' are allowed")
+            raise HTTPException(status_code=400, detail="Invalid lock mode")
 
     data = {
         "locking": lock_mode_id
     }
 
-    response = requests.put(uri, headers=auth.auth_headers(), data=data)
+    response = requests.put(uri, headers=auth.auth_headers(), json=data)
 
     if response.ok:
         data = json.loads(response.text)

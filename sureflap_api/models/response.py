@@ -16,7 +16,7 @@ class Photo(BaseModel):
     location: Optional[str] = None
     updated_at: Optional[datetime] = None
     uploading_user_id: Optional[float] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Pet Base Model
@@ -40,7 +40,7 @@ class Pet(BaseModel):
     species_id: Optional[float] = None
     tag_id: Optional[float] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Pet Location Base Model
@@ -90,7 +90,7 @@ class User(BaseModel):
     terms_accepted: Optional[datetime] = None
     time_format: Optional[float] = None
     updated_at: Optional[str] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
     weight_units: Optional[float] = None
 
 
@@ -101,7 +101,7 @@ class Tag(BaseModel):
     supported_product_ids: Optional[Sequence[float]] = None
     tag: Optional[str] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # UserShort Base Model
@@ -110,7 +110,7 @@ class UserShort(BaseModel):
     id: Optional[float] = None
     owner: Optional[bool] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
     write: Optional[bool] = None
 
 
@@ -130,7 +130,7 @@ class HubShort(BaseModel):
     product_id: Optional[float] = None
     serial_number: Optional[str] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # FlapShort Base Model
@@ -144,7 +144,7 @@ class FlapShort(BaseModel):
     parent_device_id: Optional[float] = None
     product_id: Optional[float] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # HouseholdShort Base Model
@@ -154,7 +154,7 @@ class HouseholdShort(BaseModel):
     name: Optional[str] = None
     timezone_id: Optional[float] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # PetShort Base Model
@@ -169,7 +169,7 @@ class PetShort(BaseModel):
     species_id: Optional[float] = None
     tag_id: Optional[float] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Hub Base Model
@@ -200,7 +200,7 @@ class Hub(BaseModel):
     serial_number: Optional[str] = None
     status: Optional[HubStatus] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Flap Base Model
@@ -262,7 +262,7 @@ class Flap(BaseModel):
     product_id: Optional[float] = None
     status: Optional[FlapStatus] = None
     updated_at: Optional[datetime] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Household Base Model
@@ -275,7 +275,7 @@ class Household(BaseModel):
     timezone_id: Optional[float] = None
     updated_at: Optional[datetime] = None
     users: Optional[Sequence[UserShort]] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Invite Base Model
@@ -302,7 +302,7 @@ class Invite(BaseModel):
     status: Optional[float] = None
     updated_at: Optional[datetime] = None
     user: Optional[InviteRoles] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # HouseholdDashboard Base Model
@@ -315,7 +315,7 @@ class HouseholdDashboard(BaseModel):
     timezone_id: Optional[float] = None
     updated_at: Optional[datetime] = None
     users: Optional[Sequence[UserShort]] = None
-    version: Optional[str] = None
+    version: Optional[float] = None
 
 
 # Dashboard Model
