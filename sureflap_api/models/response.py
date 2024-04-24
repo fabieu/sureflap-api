@@ -1,7 +1,7 @@
 from datetime import datetime, time
 from typing import Optional, Sequence, Union
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 # Multi-referenced models
@@ -326,3 +326,22 @@ class Dashboard(BaseModel):
     photos: Optional[Sequence[Photo]] = None
     tags: Optional[Sequence[Tag]] = None
     user: Optional[User] = None
+
+# AggregatedReport Model
+class Datapoint(BaseModel):
+    from_: datetime = Field(alias="from")
+    to: datetime
+    duration: int
+    entry_user_id: Optional[int] = None
+    exit_user_id: Optional[int] = None
+    exit_device_id: Optional[int] = None
+    entry_device_id: Optional[int] = None
+
+class DatapointList(BaseModel):
+    datapoints: Optional[Sequence[Datapoint]] = None
+
+class AggregatedReport(BaseModel):
+    movement: DatapointList
+    feeding: DatapointList
+    drinking: DatapointList
+

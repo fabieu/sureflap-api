@@ -10,7 +10,7 @@ from sureflap_api import __version__
 from sureflap_api.config import settings
 from sureflap_api.enums import LockMode
 from sureflap_api.models import response as response_models, request as request_models
-from sureflap_api.modules import devices, households, dashboard, pets, users
+from sureflap_api.modules import devices, households, dashboard, pets, users, report
 
 # FastAPI configuration
 app = FastAPI(
@@ -112,6 +112,12 @@ def get_user(household_id: int, user_id: int):
          deprecated=True)
 def get_user_photo(household_id: int, user_id: int):
     return users.get_user_photo(user_id)
+
+
+# Reports
+@app.get('/report/household/{household_id}/pet/{pet_id}', response_model=response_models.AggregatedReport, tags=["Report"])
+def get_aggregate_report(household_id: int, pet_id: int):
+    return report.get_aggregated_report(household_id, pet_id)
 
 
 def main():
