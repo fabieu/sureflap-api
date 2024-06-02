@@ -12,7 +12,7 @@ python = "^3.10,<4.0"
 cachetools = "^5.3.3"
 fastapi = "^0.110.0"
 uvicorn = "^0.29.0"
-requests = "^2.31.0"
+requests = "^2.32.2"
 dynaconf = "^3.2.5"
 
 [tool.poetry.group.dev.dependencies]
