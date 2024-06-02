@@ -1,20 +1,20 @@
 <div align="center">
-  <img width="256" heigth="256" src="https://gitlab.com/sustineo/sureflap-api/-/raw/main/docs/assets/logo.png" alt="logo">
+  <img width="256" heigth="256" src="https://raw.githubusercontent.com/fabieu/sureflap-api/main/docs/assets/logo.png" alt="logo">
 </div>
 
-[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/fabieu/sureflap-api?arch=amd64&sort=semver&style=for-the-badge)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
-[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/fabieu/sureflap-api/latest?style=for-the-badge)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline-status/sustineo/sureflap-api?branch=main&style=for-the-badge)](https://gitlab.com/sustineo/sureflap-api/-/pipelines)
-[![GitLab issues](https://img.shields.io/gitlab/issues/open/sustineo/sureflap-api?style=for-the-badge)](https://gitlab.com/sustineo/sureflap-api/-/issues)
-[![GitLab merge requests](https://img.shields.io/gitlab/merge-requests/open-raw/sustineo/sureflap-api?style=for-the-badge)](https://gitlab.com/sustineo/sureflap-api/-/merge_requests)
-[![GitLab](https://img.shields.io/gitlab/license/sustineo/sureflap-api?style=for-the-badge)](https://gitlab.com/sustineo/sureflap-api/-/blob/main/LICENSE)
+[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/fabieu/sureflap-api?sort=semver&style=flat-square)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/fabieu/sureflap-api/latest?style=flat-square)](https://hub.docker.com/repository/docker/fabieu/sureflap-api)
+[![GitHub pipeline status](https://img.shields.io/github/actions/workflow/status/fabieu/sureflap-api/build.yml?style=flat-square)](https://github.com/fabieu/sureflap-api/actions)
+[![GitHub issues](https://img.shields.io/github/issues-raw/fabieu/sureflap-api?style=flat-square)](https://github.com/fabieu/sureflap-api/issues)
+[![GitHub merge requests](https://img.shields.io/github/issues-pr/fabieu/sureflap-api?style=flat-square)](https://github.com/fabieu/sureflap-api/pulls)
+[![GitHub](https://img.shields.io/github/license/fabieu/sureflap-api?style=flat-square)](https://github.com/fabieu/sureflap-api/blob/main/LICENSE)
 
 # SureFlap API
 
 SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).
 
 <div align="center">
-  <a href="https://sustineo.gitlab.io/sureflap-api/" target="_blank" style="font-weight: bold;">
+  <a href="https://fabieu.github.io/sureflap-api/" target="_blank" style="font-weight: bold;">
     OpenAPI documentation
   </a>
 </div>
@@ -34,7 +34,7 @@ docker run -d -p 8080:3001 -e SUREFLAP_EMAIL='{YOUR_SUREFLAP_EMAIL}' -e SUREFLAP
 Clone this repository to your system and move into the sureflap project subfolder:
 
 ```bash
-git clone https://gitlab.com/sustineo/sureflap-api.git
+git clone https://github.com/fabieu/sureflap-api.git
 ```
 
 This project utilizes **Poetry**, a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you (https://python-poetry.org/).
@@ -107,15 +107,15 @@ Enables CORS (Cross-Origin Resource Sharing) for the specified domain names or i
 
 For details about all API endpoints and the corresponding request and response models take a look at the automatically generated OpenAPI documentation:
 
-- **https://sustineo.gitlab.io/sureflap-api/**
+- **https://fabieu.github.io/sureflap-api/**
 
 Here you will find everything you need to know about the available endpoints and how to call them.
 
-If you have additional questions feel free to open an issue here on GitLab.
+If you have additional questions feel free to open an issue here on GitHub.
 
 # Changelog & Releases
 
-This repository keeps a changelog using GitLab's releases functionality.
+This repository keeps a changelog using GitHub's releases functionality.
 
 Releases are based on Semantic Versioning, and use the format of `MAJOR.MINOR.PATCH`. In short, the version will be incremented based on the following:
 
