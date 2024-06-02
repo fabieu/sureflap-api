@@ -62,3 +62,30 @@ def set_lock_mode(device_id: int, lock_mode: LockMode) -> surehub.DeviceControl:
         return data['data']
     else:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+
+def assign_pet_to_device(device_id: int, pet_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag/{pet_id}"
+
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
+    payload = {'with[]': ['children', 'status', 'control']}
+
+    response = requests.put(uri, headers=headers, params=payload)
+
+    if response.ok:
+        data = json.loads(response.text)
+        return data['data']
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+def remove_pet_from_device(device_id: int, pet_id: int) -> dict:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag/{pet_id}"
+
+    headers = {'Authorization': f'Bearer {auth.getToken()}'}
+
+    response = requests.delete(uri, headers=headers)
+
+    if response.ok:
+        return response.status_code
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
