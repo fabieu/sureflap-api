@@ -10,9 +10,9 @@ keywords = ["Sureflap", "Sure Petcare", "REST", "API"]
 [tool.poetry.dependencies]
 python = "^3.10,<4.0"
 cachetools = "^5.3.3"
-fastapi = "^0.110.0"
-uvicorn = "^0.29.0"
-requests = "^2.31.0"
+fastapi = "^0.111.0"
+uvicorn = "^0.30.1"
+requests = "^2.32.3"
 dynaconf = "^3.2.5"
 
 [tool.poetry.group.dev.dependencies]
