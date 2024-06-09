@@ -16,9 +16,9 @@ requests = "^2.31.0"
 dynaconf = "^3.2.5"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.1.1"
+pytest = "^8.2.2"
 vermin = "^1.6.0"
-autopep8 = "^2.1.0"
+autopep8 = "^2.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
