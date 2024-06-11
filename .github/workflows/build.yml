@@ -2,6 +2,8 @@ name: Build and publish
 
 on:
   push:
+    branches:
+      - main
     paths:
       - pyproject.toml
   workflow_dispatch:
@@ -18,7 +20,6 @@ env:
 jobs:
   variables:
     name: Set environment variables
-    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     container:
       image: python:3.12-alpine
@@ -38,7 +39,6 @@ jobs:
         run: echo "Version ${{ env.VERSION }}"
   build:
     name: Build images
-    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     needs: variables
     container:
