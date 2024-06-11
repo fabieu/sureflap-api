@@ -2,7 +2,7 @@ FROM python:3.12.1-alpine3.19
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV POETRY_VERSION=1.7.1
+ENV POETRY_VERSION=1.8.3
 
 RUN apk add --no-cache --virtual build-deps curl gcc musl-dev libffi-dev && \
     pip install --upgrade pip poetry==$POETRY_VERSION && \
