@@ -1,5 +1,5 @@
 from datetime import datetime, time
-from typing import Optional, Sequence, Union
+from typing import Optional, List, Union
 
 from pydantic import BaseModel
 
@@ -98,7 +98,7 @@ class User(BaseModel):
 class Tag(BaseModel):
     created_at: Optional[datetime] = None
     id: Optional[float] = None
-    supported_product_ids: Optional[Sequence[float]] = None
+    supported_product_ids: Optional[List[float]] = None
     tag: Optional[str] = None
     updated_at: Optional[datetime] = None
     version: Optional[float] = None
@@ -190,7 +190,7 @@ class Control(BaseModel):
 
 
 class Hub(BaseModel):
-    children: Optional[Sequence[FlapShort]] = None
+    children: Optional[List[FlapShort]] = None
     control: Optional[Control] = None
     created_at: Optional[str] = None
     household_id: Optional[float] = None
@@ -243,7 +243,7 @@ class Curfew(BaseModel):
 
 
 class FlapControl(BaseModel):
-    curfew: Optional[Curfew] = None
+    curfew: Union[Curfew, List[Curfew], None]
     fast_polling: Optional[bool] = None
     locking: Optional[int] = None
 
@@ -270,11 +270,11 @@ class Household(BaseModel):
     created_at: Optional[datetime] = None
     id: Optional[float] = None
     name: Optional[str] = None
-    pets: Optional[Sequence[PetShort]] = None
+    pets: Optional[List[PetShort]] = None
     share_code: Optional[str] = None
     timezone_id: Optional[float] = None
     updated_at: Optional[datetime] = None
-    users: Optional[Sequence[UserShort]] = None
+    users: Optional[List[UserShort]] = None
     version: Optional[float] = None
 
 
@@ -309,20 +309,20 @@ class Invite(BaseModel):
 class HouseholdDashboard(BaseModel):
     created_at: Optional[datetime] = None
     id: Optional[float] = None
-    invites: Optional[Sequence[Invite]] = None
+    invites: Optional[List[Invite]] = None
     name: Optional[str] = None
     share_code: Optional[str] = None
     timezone_id: Optional[float] = None
     updated_at: Optional[datetime] = None
-    users: Optional[Sequence[UserShort]] = None
+    users: Optional[List[UserShort]] = None
     version: Optional[float] = None
 
 
 # Dashboard Model
 class Dashboard(BaseModel):
-    devices: Optional[Sequence[Union[HubShort, FlapShort]]] = None
-    households: Optional[Sequence[HouseholdDashboard]] = None
-    pets: Optional[Sequence[Pet]] = None
-    photos: Optional[Sequence[Photo]] = None
-    tags: Optional[Sequence[Tag]] = None
+    devices: Optional[List[Union[HubShort, FlapShort]]] = None
+    households: Optional[List[HouseholdDashboard]] = None
+    pets: Optional[List[Pet]] = None
+    photos: Optional[List[Photo]] = None
+    tags: Optional[List[Tag]] = None
     user: Optional[User] = None
