@@ -1,18 +1,22 @@
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
+from typing import List
 
 import requests
 from fastapi import HTTPException
+from fastapi.encoders import jsonable_encoder
 
 from sureflap_api.config import settings
-from sureflap_api.models import request as request_models
+from sureflap_api.models import surehub
 from sureflap_api.modules import auth
 
 
-def get_pets_from_household(household_id: int) -> list:
-    uri = f"{settings.endpoint}/api/household/{household_id}/pet"
+def get_pets() -> List[surehub.Pet]:
+    uri = f"{settings.endpoint}/api/pet"
 
-    response = requests.get(uri, headers=auth.auth_headers())
+    payload = {'with[]': ['photo', 'position']}
+
+    response = requests.get(uri, headers=auth.auth_headers(), params=payload)
 
     if response.ok:
         data = json.loads(response.text)
@@ -21,8 +25,8 @@ def get_pets_from_household(household_id: int) -> list:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def get_pet(household_id: int, pet_id: int) -> dict:
-    uri = f"{settings.endpoint}/api/household/{household_id}/pet"
+def get_pet(pet_id: int) -> surehub.Pet:
+    uri = f"{settings.endpoint}/api/pet/{pet_id}"
 
     payload = {'with[]': ['photo', 'position']}
 
@@ -30,78 +34,33 @@ def get_pet(household_id: int, pet_id: int) -> dict:
 
     if response.ok:
         data = json.loads(response.text)
-
-        for pet in data['data']:
-            if str(pet['id']) == str(pet_id):
-                return pet
+        return data['data']
     else:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def get_pet_location(pet_id: int) -> dict:
+def get_pet_position(pet_id: int) -> surehub.PetPosition:
+    pet = get_pet(pet_id)
+    return pet['position']
+
+
+def get_pet_positions() -> List[surehub.PetPosition]:
+    pet_positions = []
+    for pet in get_pets():
+        pet_positions.append(pet['position'])
+
+    return pet_positions
+
+
+def set_pet_position(pet_id: int, pet_position: surehub.CreatePetPosition) -> surehub.PetPosition:
     uri = f"{settings.endpoint}/api/pet/{pet_id}/position"
 
-    response = requests.get(uri, headers=auth.auth_headers())
+    pet_position_dict = jsonable_encoder(pet_position)
 
-    if response.ok:
-        data = json.loads(response.text)
+    if not pet_position_dict['since']:
+        pet_position_dict['since'] = datetime.now(timezone.utc).isoformat()
 
-        if data['data']['where'] == 1:
-            petLocation = {
-                "pet_id": data['data']['pet_id'],
-                "location": "inside"
-            }
-        else:
-            petLocation = {
-                "pet_id": data['data']['pet_id'],
-                "location": "outside"
-            }
-
-        return petLocation
-    else:
-        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
-
-
-def get_pets_location(household_id: int) -> list:
-    pets = []
-    petInfo = []
-
-    for pet in get_pets_from_household(household_id):
-        pets.append(get_pet(household_id, pet['id']))
-
-    for pet in pets:
-        since = datetime.strptime(pet['position']['since'], "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=timezone.utc)
-        now = datetime.now(timezone.utc)
-        duration = now - since
-
-        # Remove microseconds from timedelta object
-        duration = duration - timedelta(microseconds=duration.microseconds)
-
-        if pet['position']['where'] == 1:
-            location = "inside"
-        else:
-            location = "outside"
-
-        petDict = {
-            "name": pet['name'],
-            "location": location,
-            "since": since.strftime("%Y-%m-%dT%H:%M:%S+00:00"),
-            "duration": str(duration)
-        }
-
-        petInfo.append(petDict)
-    return petInfo
-
-
-def set_pet_location(pet_id: int, pet_location: request_models.PetLocationSet) -> dict:
-    uri = f"{settings.endpoint}/api/pet/{pet_id}/position"
-
-    body = {
-        "where": pet_location.where.value,  # 1 = inside, 2 = outside
-        "since": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
-    }
-
-    response = requests.post(uri, headers=auth.auth_headers(), json=body)
+    response = requests.post(uri, headers=auth.auth_headers(), json=pet_position_dict)
 
     if response.ok:
         data = json.loads(response.text)

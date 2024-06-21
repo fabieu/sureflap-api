@@ -1,9 +1,4 @@
-from enum import Enum, IntEnum
-
-
-class DirectionEnum(IntEnum):
-    IN = 1
-    OUT = 2
+from enum import Enum
 
 
 class LockMode(Enum):
