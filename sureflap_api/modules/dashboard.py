@@ -4,10 +4,11 @@ import requests
 from fastapi import HTTPException
 
 from sureflap_api.config import settings
+from sureflap_api.models import surehub
 from sureflap_api.modules import auth
 
 
-def get_dashboard() -> dict:
+def get_dashboard() -> surehub.MeStart:
     uri = f"{settings.endpoint}/api/me/start"
 
     response = requests.get(uri, headers=auth.auth_headers())

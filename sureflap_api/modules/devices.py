@@ -1,14 +1,16 @@
 import json
+from typing import List
 
 import requests
 from fastapi import HTTPException
 
 from sureflap_api.config import settings
-from sureflap_api.enums import LockMode
+from sureflap_api.models import surehub
+from sureflap_api.models.custom import LockMode
 from sureflap_api.modules import auth
 
 
-def get_devices() -> dict:
+def get_devices() -> List[surehub.Device]:
     uri = f"{settings.endpoint}/api/device"
 
     response = requests.get(uri, headers=auth.auth_headers())
@@ -20,7 +22,7 @@ def get_devices() -> dict:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def get_devices_by_id(device_id: int) -> dict:
+def get_devices_by_id(device_id: int) -> surehub.Device:
     uri = f"{settings.endpoint}/api/device/{device_id}"
 
     payload = {'with[]': ['children', 'status', 'control']}
@@ -34,7 +36,7 @@ def get_devices_by_id(device_id: int) -> dict:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
 
 
-def set_lock_mode(device_id: int, lock_mode: LockMode) -> dict:
+def set_lock_mode(device_id: int, lock_mode: LockMode) -> surehub.DeviceControl:
     uri = f"{settings.endpoint}/api/device/{device_id}/control"
 
     match lock_mode:

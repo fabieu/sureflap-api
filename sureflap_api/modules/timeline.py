@@ -8,7 +8,7 @@ from sureflap_api.config import settings
 from sureflap_api.modules import auth
 
 
-def getTimeline(household_id: int) -> str:
+def get_timeline_of_household(household_id: int) -> list:
     uri = f"{settings.endpoint}/api/timeline/household/{household_id}"
     result = []
 
@@ -17,13 +17,13 @@ def getTimeline(household_id: int) -> str:
     if response.ok:
         data = json.loads(response.text)
         count = data['meta']['count']
-        pageSize = data['meta']['page_size']
+        page_size = data['meta']['page_size']
 
-        requestCount = math.ceil(count / pageSize)
+        request_count = math.ceil(count / page_size)
 
-        for i in range(1, requestCount + 1):
+        for i in range(1, request_count + 1):
             payload = {'page_size': 1000, 'page': i}
-            response2 = requests.get(uri, headers=headers, params=payload)
+            response2 = requests.get(uri, headers=auth.auth_headers(), params=payload)
 
             if response2.ok:
                 page = json.loads(response2.text)
