@@ -1,11 +1,6 @@
 name: Build and publish
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - pyproject.toml
   workflow_dispatch:
 
 concurrency:
@@ -13,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  POETRY_VERSION: "1.8.3"
+  POETRY_VERSION: ${{ vars.POETRY_VERSION }}
   CONTAINER_REGISTRY: "${{ vars.CONTAINER_REGISTRY }}"
   CONTAINER_IMAGE: "${{ vars.CONTAINER_IMAGE }}"
 
@@ -25,8 +20,8 @@ jobs:
       image: python:3.12-alpine
     outputs:
       version: "${{ env.VERSION }}"
-      dockerhub-image: "${{ env.CONTAINER_IMAGE }}:latest"
-      dockerhub-image-version: "${{ env.CONTAINER_IMAGE }}:${{ env.VERSION }}"
+      version-major: "${{ env.VERSION_MAJOR }}"
+      version-minor: "${{ env.VERSION_MINOR }}"
     timeout-minutes: 5
     steps:
       - name: Checkout
@@ -34,7 +29,15 @@ jobs:
       - name: Install poetry
         run: pip install poetry==$POETRY_VERSION
       - name: Save version to environment
-        run: echo "VERSION=$(poetry version -s)" >> "$GITHUB_ENV"
+        run: |
+          VERSION=$(poetry version -s)
+          VERSION="${VERSION#[vV]}"
+          VERSION_MAJOR="${VERSION%%\.*}"
+          VERSION_MINOR="${VERSION#*.}"
+          VERSION_MINOR="${VERSION_MINOR%.*}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "VERSION_MAJOR=$VERSION_MAJOR" >> "$GITHUB_ENV"
+          echo "VERSION_MINOR=$VERSION_MINOR" >> "$GITHUB_ENV"
       - name: Display version
         run: echo "Version ${{ env.VERSION }}"
   build:
@@ -66,36 +69,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           pull: true
           push: true
-          tags: ${{ needs.variables.outputs.dockerhub-image }},${{ needs.variables.outputs.dockerhub-image-version }}
-  github-pages:
-    environment:
-      name: docs
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    container:
-      image: python:3.12-slim
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Install poetry
-        run: pip install poetry==$POETRY_VERSION
-      - name: Install dependencies
-        run: poetry install --only main
-      - name: Export docs
-        run: poetry run python ./docs/export_openapi.py
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./public"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          tags: ${{ env.CONTAINER_IMAGE }}:latest,${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version_major }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version_major }}.${{ needs.variables.outputs.version_minor }}
+  publish-docs:
+    uses: ./.github/workflows/docs.yml
 
   create-release:
     name: Create release

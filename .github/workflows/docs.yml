@@ -1,0 +1,43 @@
+name: Docs
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  POETRY_VERSION: ${{ vars.POETRY_VERSION }}
+
+jobs:
+  github-pages:
+    environment:
+      name: Documentation
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.12-slim
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Install poetry
+        run: pip install poetry==$POETRY_VERSION
+      - name: Install dependencies
+        run: poetry install --only main
+      - name: Export docs
+        run: poetry run python ./docs/export_openapi.py
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./public"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
