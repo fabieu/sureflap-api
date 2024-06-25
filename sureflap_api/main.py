@@ -4,7 +4,6 @@ import uvicorn
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-from typing import Sequence, Union
 from typing_extensions import Annotated
 
 from sureflap_api import __version__
@@ -65,14 +64,32 @@ async def set_device_lock_mode(device_id: int, lock_mode: Annotated[custom.LockM
     return devices.set_lock_mode(device_id, lock_mode)
 
 
-@app.put('/devices/{device_id}/tag/{pet_id}', response_model=Union[response_models.Flap], tags=["Device"])
-def assign_pet_to_device(device_id: int, pet_id: int):
-    return devices.assign_pet_to_device(device_id, pet_id)
+@app.get('/devices/{device_id}/tags',
+         response_model_exclude_none=True,
+         tags=["Device"])
+def get_tags_of_device(device_id: int) -> List[surehub.Tag]:
+    return devices.get_tags_of_device(device_id)
 
 
-@app.delete('/devices/{device_id}/tag/{pet_id}', status_code=204, tags=["Device"])
-def remove_pet_from_device(device_id: int, pet_id: int):
-    return devices.remove_pet_from_device(device_id, pet_id)
+@app.get('/devices/{device_id}/tags/{tag_id}',
+         response_model_exclude_none=True,
+         tags=["Device"])
+def get_tag_of_device(device_id: int, tag_id: int) -> surehub.Tag:
+    return devices.get_tag_of_device(device_id, tag_id)
+
+
+@app.put('/devices/{device_id}/tags/{tag_id}',
+         response_model_exclude_none=True,
+         tags=["Device"])
+def assign_tag_to_device(device_id: int, tag_id: int) -> surehub.Tag:
+    return devices.assign_tag_to_device(device_id, tag_id)
+
+
+@app.delete('/devices/{device_id}/tags/{tag_id}',
+            response_model_exclude_none=True,
+            tags=["Device"])
+def remove_tag_from_device(device_id: int, tag_id: int) -> surehub.Tag:
+    return devices.remove_tag_from_device(device_id, tag_id)
 
 
 # Household
