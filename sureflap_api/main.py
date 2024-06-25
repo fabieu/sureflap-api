@@ -64,6 +64,34 @@ async def set_device_lock_mode(device_id: int, lock_mode: Annotated[custom.LockM
     return devices.set_lock_mode(device_id, lock_mode)
 
 
+@app.get('/devices/{device_id}/tags',
+         response_model_exclude_none=True,
+         tags=["Device"])
+def get_tags_of_device(device_id: int) -> List[surehub.Tag]:
+    return devices.get_tags_of_device(device_id)
+
+
+@app.get('/devices/{device_id}/tags/{tag_id}',
+         response_model_exclude_none=True,
+         tags=["Device"])
+def get_tag_of_device(device_id: int, tag_id: int) -> surehub.Tag:
+    return devices.get_tag_of_device(device_id, tag_id)
+
+
+@app.put('/devices/{device_id}/tags/{tag_id}',
+         response_model_exclude_none=True,
+         tags=["Device"])
+def assign_tag_to_device(device_id: int, tag_id: int) -> surehub.Tag:
+    return devices.assign_tag_to_device(device_id, tag_id)
+
+
+@app.delete('/devices/{device_id}/tags/{tag_id}',
+            response_model_exclude_none=True,
+            tags=["Device"])
+def remove_tag_from_device(device_id: int, tag_id: int) -> surehub.Tag:
+    return devices.remove_tag_from_device(device_id, tag_id)
+
+
 # Household
 @app.get('/households',
          response_model_exclude_none=True,

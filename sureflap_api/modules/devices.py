@@ -62,3 +62,51 @@ def set_lock_mode(device_id: int, lock_mode: LockMode) -> surehub.DeviceControl:
         return data['data']
     else:
         raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+
+def get_tags_of_device(device_id: int) -> List[surehub.Tag]:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag"
+
+    response = requests.get(uri, headers=auth.auth_headers())
+
+    if response.ok:
+        data = json.loads(response.text)
+        return data['data']
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+
+def get_tag_of_device(device_id: int, tag_id: int) -> surehub.Tag:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag/{tag_id}"
+
+    response = requests.get(uri, headers=auth.auth_headers())
+
+    if response.ok:
+        data = json.loads(response.text)
+        return data['data']
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+
+def assign_tag_to_device(device_id: int, tag_id: int) -> surehub.Tag:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag/{tag_id}"
+
+    response = requests.put(uri, headers=auth.auth_headers())
+
+    if response.ok:
+        data = json.loads(response.text)
+        return data['data']
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
+
+
+def remove_tag_from_device(device_id: int, tag_id: int) -> surehub.Tag:
+    uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag/{tag_id}"
+
+    response = requests.delete(uri, headers=auth.auth_headers())
+
+    if response.ok:
+        data = json.loads(response.text)
+        return data['data']
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text.replace("\"", "'"))
