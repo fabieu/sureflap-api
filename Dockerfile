@@ -11,7 +11,7 @@ RUN apk add --no-cache --virtual build-deps curl gcc musl-dev libffi-dev && \
 ENV PATH="${PATH}:/root/.local/bin"
 
 WORKDIR /usr/src/app/
-COPY sureflap_api ./sureflap_api
+COPY surehub_api ./surehub_api
 COPY poetry.lock pyproject.toml ./
 
 RUN poetry config virtualenvs.create false &&\
@@ -19,4 +19,4 @@ RUN poetry config virtualenvs.create false &&\
 
 EXPOSE 3001
 
-ENTRYPOINT ["python", "sureflap_api/main.py"]
+ENTRYPOINT ["python", "surehub_api/main.py"]

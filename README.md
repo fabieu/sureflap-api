@@ -9,9 +9,9 @@
 [![GitHub merge requests](https://img.shields.io/github/issues-pr/fabieu/sureflap-api?style=flat-square)](https://github.com/fabieu/sureflap-api/pulls)
 [![GitHub](https://img.shields.io/github/license/fabieu/sureflap-api?style=flat-square)](https://github.com/fabieu/sureflap-api/blob/main/LICENSE)
 
-# SureFlap API
+# SureHub API
 
-SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).
+SureHub API is a simple, yet powerful RESTful API for products from [Sure Petcare](https://www.surepetcare.com).
 
 <div align="center">
   <a href="https://fabieu.github.io/sureflap-api/" target="_blank" style="font-weight: bold;">
@@ -24,14 +24,14 @@ SureFlap API is a simple, yet powerful RESTful API for products from [Sure Petca
 ## Docker (recommended)
 
 ```bash
-docker run -d -p 8080:3001 -e SUREFLAP_EMAIL='{YOUR_SUREFLAP_EMAIL}' -e SUREFLAP_PASSWORD='{YOUR_SUREFLAP_PASSWORD}' fabieu/sureflap-api:latest
+docker run -d -p 8080:3001 -e SUREHUB_EMAIL='{YOUR_SUREHUB_EMAIL}' -e SUREHUB_PASSWORD='{YOUR_SUREHUB_PASSWORD}' fabieu/sureflap-api:latest
 ```
 
 > For all available options take a look at the [Configuration](#configuration) section.
 
 ## Manual install
 
-Clone this repository to your system and move into the sureflap project subfolder:
+Clone this repository to your system and move into the project subfolder:
 
 ```bash
 git clone https://github.com/fabieu/sureflap-api.git
@@ -54,14 +54,14 @@ poetry install
 Set at least the required environment variables:
 
 ```bash
-export SUREFLAP_EMAIL={YOUR_SUREFLAP_EMAIL}
-export SUREFLAP_PASSWORD={YOUR_SUREFLAP_PASSWORD}
+export SUREHUB_EMAIL={YOUR_SUREHUB_EMAIL}
+export SUREHUB_PASSWORD={YOUR_SUREHUB_PASSWORD}
 ```
 
 Start the integrated webserver with the following command:
 
 ```bash
-poetry run python .\sureflap_api\main.py
+poetry run python .\surehub_api\main.py
 ```
 
 > For all available options take a look at the [Configuration](#configuration) section.
@@ -70,19 +70,19 @@ poetry run python .\sureflap_api\main.py
 
 The configuration is done via environment variables. The following options are available:
 
-### `SUREFLAP_EMAIL` (required)
+### `SUREHUB_EMAIL` (required)
 
 Email of your _Sure Petcare_ account. Make sure to use an account with control privileges if you want to use the full capabilities of this API. You can change the privileges on the official Sure Petcare website.
 
-### `SUREFLAP_PASSWORD` (required)
+### `SUREHUB_PASSWORD` (required)
 
-Password of the in `SUREFLAP_EMAIL` specified _Sure Petcare_ account.
+Password of the in `SUREHUB_EMAIL` specified _Sure Petcare_ account.
 
-### `SUREFLAP_LOGLEVEL` (optional)
+### `SUREHUB_LOGLEVEL` (optional)
 
 > Default: info
 
-The `SUREFLAP_LOGLEVEL` option controls the level of log output and can be changed to be more or less verbose, which might be useful when you are dealing with an unknown issue.
+The `SUREHUB_LOGLEVEL` option controls the level of log output and can be changed to be more or less verbose, which might be useful when you are dealing with an unknown issue.
 
 - `trace`: Show every detail, like all called internal functions.
 - `debug`: Shows detailed debug information.
@@ -91,13 +91,13 @@ The `SUREFLAP_LOGLEVEL` option controls the level of log output and can be chang
 - `error`: Runtime errors that do not require immediate action.
 - `fatal`: Something went terribly wrong. Add-on becomes unusable.
 
-### `SUREFLAP_PORT` (optional)
+### `SUREHUB_PORT` (optional)
 
 > Default: 3001
 
 The port for the ASGI server. This is the same as the port used for API requests. Please make sure that the specified port isn't used by another application.
 
-### `SUREFLAP_CORS` (optional)
+### `SUREHUB_CORS` (optional)
 
 > Default: None
 

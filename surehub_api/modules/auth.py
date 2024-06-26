@@ -8,7 +8,7 @@ from cachetools import TTLCache
 from fastapi import HTTPException
 
 # Local modules
-from sureflap_api.config import settings
+from surehub_api.config import settings
 
 cache = TTLCache(maxsize=128, ttl=86400)
 

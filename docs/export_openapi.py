@@ -2,10 +2,10 @@
 import json
 from pathlib import Path
 
-# PyPi modules
-
 # Local modules
-from sureflap_api.main import app
+from surehub_api.main import app
+
+# PyPi modules
 
 OPENAPI_PATH = Path(__file__).resolve().parent.parent / "public" / "openapi.json"
 
