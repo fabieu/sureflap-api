@@ -4,10 +4,10 @@ from typing import List
 import requests
 from fastapi import HTTPException
 
-from sureflap_api.config import settings
-from sureflap_api.models import surehub
-from sureflap_api.models.custom import LockMode
-from sureflap_api.modules import auth
+from surehub_api.config import settings
+from surehub_api.models import surehub
+from surehub_api.models.custom import LockMode
+from surehub_api.modules import auth
 
 
 def get_devices() -> List[surehub.Device]:

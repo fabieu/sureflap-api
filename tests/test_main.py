@@ -4,7 +4,7 @@
 from fastapi.testclient import TestClient
 
 # Local modules
-from sureflap_api.main import app
+from surehub_api.main import app
 
 client = TestClient(app)
 

@@ -6,16 +6,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 from typing_extensions import Annotated
 
-from sureflap_api import __version__
-from sureflap_api.config import settings
-from sureflap_api.models import surehub, custom
-from sureflap_api.modules import devices, households, dashboard, pets
+from surehub_api import __version__
+from surehub_api.config import settings
+from surehub_api.models import surehub, custom
+from surehub_api.modules import devices, households, dashboard, pets
 
 # FastAPI configuration
 app = FastAPI(
-    title="Unofficial SureFlap API",
+    title="Unofficial SureHub API",
     version=__version__,
-    description="SureFlap API is a simple, yet powerful RESTful-API for products from [Sure Petcare](https://www.surepetcare.com).",
+    description="SureHub API is a simple, yet powerful RESTful-API for products from [Sure Petcare](https://www.surepetcare.com).",
     license_info={
         "name": "Apache 2.0",
         "identifier": "Apache-2.0",

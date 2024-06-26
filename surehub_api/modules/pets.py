@@ -6,9 +6,9 @@ import requests
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 
-from sureflap_api.config import settings
-from sureflap_api.models import surehub
-from sureflap_api.modules import auth
+from surehub_api.config import settings
+from surehub_api.models import surehub
+from surehub_api.modules import auth
 
 
 def get_pets() -> List[surehub.Pet]:
