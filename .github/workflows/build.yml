@@ -69,7 +69,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           pull: true
           push: true
-          tags: ${{ env.CONTAINER_IMAGE }}:latest,${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version_major }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version_major }}.${{ needs.variables.outputs.version_minor }}
+          tags: ${{ env.CONTAINER_IMAGE }}:latest,${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version-major }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version-major }}.${{ needs.variables.outputs.version-minor }}
   publish-docs:
     uses: ./.github/workflows/docs.yml
 
