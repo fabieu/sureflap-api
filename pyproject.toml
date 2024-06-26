@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "surehub-api"
-version = "4.2.7"
+version = "5.0.0"
 license = "Apache-2.0"
 description = "SureHub API is a simple, yet powerful RESTful API for products from Sure Petcare"
 authors = ["Fabian Eulitz <dev@sustineo.de>"]
