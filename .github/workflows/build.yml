@@ -7,11 +7,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  POETRY_VERSION: ${{ vars.POETRY_VERSION }}
-  CONTAINER_REGISTRY: "${{ vars.CONTAINER_REGISTRY }}"
-  CONTAINER_IMAGE: "${{ vars.CONTAINER_IMAGE }}"
-
 jobs:
   variables:
     name: Set environment variables
@@ -27,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install poetry
-        run: pip install poetry==$POETRY_VERSION
+        run: pip install poetry==${{ vars.POETRY_VERSION }}
       - name: Save version to environment
         run: |
           VERSION=$(poetry version -s)
@@ -69,7 +64,24 @@ jobs:
           platforms: linux/amd64,linux/arm64
           pull: true
           push: true
-          tags: ${{ env.CONTAINER_IMAGE }}:latest,${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version-major }},${{ env.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version-major }}.${{ needs.variables.outputs.version-minor }}
+          build-args: |
+            POETRY_VERSION=${{ vars.POETRY_VERSION }}
+          tags: |
+            ${{ vars.CONTAINER_IMAGE }}:latest
+            ${{ vars.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version }}
+            ${{ vars.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version-major }}
+            ${{ vars.CONTAINER_IMAGE }}:${{ needs.variables.outputs.version-major }}.${{ needs.variables.outputs.version-minor }}
+          labels: |
+            org.opencontainers.image.created="${date -u +"%Y-%m-%dT%H:%M:%SZ"}"
+            org.opencontainers.image.authors="Fabian Eulitz"
+            org.opencontainers.image.url="https://hub.docker.com/repository/docker/${{ vars.CONTAINER_IMAGE }}"
+            org.opencontainers.image.source="https://github.com/${{ github.repository }}"
+            org.opencontainers.image.version="${{ needs.variables.outputs.version }}"
+            org.opencontainers.image.revision="${{ github.sha }}"
+            org.opencontainers.image.licenses="Apache-2.0"
+            org.opencontainers.image.title="SureHub API"
+            org.opencontainers.image.description="SureHub API is a simple, yet powerful RESTful API for products from Sure Petcare"
+
   publish-docs:
     uses: ./.github/workflows/docs.yml
 
