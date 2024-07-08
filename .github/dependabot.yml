@@ -26,5 +26,14 @@ updates:
       day: "saturday"
       time: "07:00"
     groups:
-      all-actions:
+      all:
+        patterns: [ "*" ]
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "07:00"
+    groups:
+      all:
         patterns: [ "*" ]
