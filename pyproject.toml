@@ -16,7 +16,7 @@ requests = "^2.32.3"
 dynaconf = "^3.2.6"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.2.2"
+pytest = "^8.3.2"
 vermin = "^1.6.0"
 autopep8 = "^2.3.1"
 
