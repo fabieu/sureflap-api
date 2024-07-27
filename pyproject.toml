@@ -11,7 +11,7 @@ keywords = ["SureHub", "Sure Petcare", "REST", "API"]
 python = "^3.10,<4.0"
 cachetools = "^5.4.0"
 fastapi = "^0.111.1"
-uvicorn = "^0.30.2"
+uvicorn = "^0.30.3"
 requests = "^2.32.3"
 dynaconf = "^3.2.6"
 
