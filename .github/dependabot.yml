@@ -9,13 +9,8 @@ updates:
     labels:
       - "dependencies"
     groups:
-      prod-dependencies:
-        dependency-type: "production"
-        update-types:
-          - "minor"
-          - "patch"
-      dev-dependencies:
-        dependency-type: "development"
+      pip-dependencies:
+        patterns: [ "*" ]
         update-types:
           - "minor"
           - "patch"
@@ -26,7 +21,7 @@ updates:
       day: "saturday"
       time: "07:00"
     groups:
-      all:
+      gh-actions-dependencies:
         patterns: [ "*" ]
   - package-ecosystem: "docker"
     directory: "/"
@@ -35,5 +30,5 @@ updates:
       day: "saturday"
       time: "07:00"
     groups:
-      all:
+      docker-dependencies:
         patterns: [ "*" ]
