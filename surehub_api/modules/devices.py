@@ -42,10 +42,10 @@ def set_lock_mode(device_id: int, lock_mode: LockMode) -> surehub.DeviceControl:
     match lock_mode:
         case LockMode.NONE:
             lock_mode_id = 0  # Pets can enter and leave the house
-        case LockMode.OUT:
-            lock_mode_id = 1  # Pets can leave the house but can no longer enter it
         case LockMode.IN:
-            lock_mode_id = 2  # Pets can enter the house but can no longer leave it
+            lock_mode_id = 1  # Pets can enter the house but can no longer leave it
+        case LockMode.OUT:
+            lock_mode_id = 2  # Pets can leave the house but can no longer enter it
         case LockMode.BOTH:
             lock_mode_id = 3  # Pets can no longer enter and leave the house
         case _:
