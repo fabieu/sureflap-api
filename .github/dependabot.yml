@@ -8,6 +8,8 @@ updates:
       time: "07:00"
     labels:
       - "dependencies"
+    assignees:
+      - "fabieu"
     groups:
       pip-dependencies:
         patterns: [ "*" ]
@@ -20,6 +22,10 @@ updates:
       interval: "weekly"
       day: "saturday"
       time: "07:00"
+    labels:
+      - "dependencies"
+    assignees:
+      - "fabieu"
     groups:
       gh-actions-dependencies:
         patterns: [ "*" ]
@@ -29,6 +35,10 @@ updates:
       interval: "weekly"
       day: "saturday"
       time: "07:00"
+    labels:
+      - "dependencies"
+    assignees:
+      - "fabieu"
     groups:
       docker-dependencies:
         patterns: [ "*" ]
