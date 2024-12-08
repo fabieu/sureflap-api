@@ -1,6 +1,6 @@
 from datetime import datetime, time
 from enum import Enum
-from typing import Optional, List, Union
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -37,7 +37,7 @@ class Curfew(BaseModel):
 
 
 class DeviceControl(BaseModel):
-    curfew: Union[Curfew, List[Curfew], None] = None
+    curfew: Curfew | List[Curfew] | None = None
     fast_polling: Optional[bool] = None
     locking: Optional[int] = None
     led_mode: Optional[int] = None
