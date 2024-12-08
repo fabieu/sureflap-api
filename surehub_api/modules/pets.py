@@ -10,13 +10,15 @@ from surehub_api.config import settings
 from surehub_api.models import surehub
 from surehub_api.modules import auth
 
+PET_PAYLOAD = {
+    'with[]': ['photo', 'position', 'status', 'conditions', 'breed', 'food_type', 'species']
+}
+
 
 def get_pets() -> List[surehub.Pet]:
     uri = f"{settings.endpoint}/api/pet"
 
-    payload = {'with[]': ['photo', 'position']}
-
-    response = requests.get(uri, headers=auth.auth_headers(), params=payload)
+    response = requests.get(uri, headers=auth.auth_headers(), params=PET_PAYLOAD)
 
     if response.ok:
         data = json.loads(response.text)
@@ -28,9 +30,7 @@ def get_pets() -> List[surehub.Pet]:
 def get_pet(pet_id: int) -> surehub.Pet:
     uri = f"{settings.endpoint}/api/pet/{pet_id}"
 
-    payload = {'with[]': ['photo', 'position']}
-
-    response = requests.get(uri, headers=auth.auth_headers(), params=payload)
+    response = requests.get(uri, headers=auth.auth_headers(), params=PET_PAYLOAD)
 
     if response.ok:
         data = json.loads(response.text)
@@ -41,13 +41,24 @@ def get_pet(pet_id: int) -> surehub.Pet:
 
 def get_pet_position(pet_id: int) -> surehub.PetPosition:
     pet = get_pet(pet_id)
-    return pet['position']
+    pet_position = pet.get('position')
+
+    if not pet_position:
+        raise HTTPException(status_code=500, detail=f"Invalid position '{pet_position}' for pet_id {pet_id}")
+
+    return pet_position
 
 
 def get_pet_positions() -> List[surehub.PetPosition]:
     pet_positions = []
+
     for pet in get_pets():
-        pet_positions.append(pet['position'])
+        pet_position = pet.get('position')
+
+        if not pet_position:
+            raise HTTPException(status_code=500, detail=f"Invalid position '{pet_position}' for pet_id {pet.get('id')}")
+
+        pet_positions.append(pet_position)
 
     return pet_positions
 
