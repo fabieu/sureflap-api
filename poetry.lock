@@ -50,13 +50,13 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "cachetools"
-version = "5.5.1"
+version = "5.5.2"
 description = "Extensible memoizing collections and decorators"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "cachetools-5.5.1-py3-none-any.whl", hash = "sha256:b76651fdc3b24ead3c648bbdeeb940c1b04d365b38b4af66788f9ec4a81d42bb"},
-    {file = "cachetools-5.5.1.tar.gz", hash = "sha256:70f238fbba50383ef62e55c6aff6d9673175fe59f7c6782c7a0b9e38f4a9df95"},
+    {file = "cachetools-5.5.2-py3-none-any.whl", hash = "sha256:d26a22bcc62eb95c3beabd9f1ee5e820d3d2704fe2967cbe350e20c8ffcd3f0a"},
+    {file = "cachetools-5.5.2.tar.gz", hash = "sha256:1a661caa9175d26759571b2e19580f9d6393969e5dfca11fdb1f947a23e640d4"},
 ]
 
 [[package]]
@@ -211,13 +211,13 @@ files = [
 
 [[package]]
 name = "dynaconf"
-version = "3.2.7"
+version = "3.2.10"
 description = "The dynamic configurator for your Python Project"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dynaconf-3.2.7-py2.py3-none-any.whl", hash = "sha256:d4bba5d75242acc7bee575e44e190a38e15a7dc02ba5fe7580e4c019ed1acdd6"},
-    {file = "dynaconf-3.2.7.tar.gz", hash = "sha256:1246ef16b0577aa25876f1606e8eb2ea2d9acc61a39087e01c90c5a9da787b46"},
+    {file = "dynaconf-3.2.10-py2.py3-none-any.whl", hash = "sha256:7f70a4b8a8861efb88d8267aeb6f246c791dc34ecbb8299c26a19abd59113df6"},
+    {file = "dynaconf-3.2.10.tar.gz", hash = "sha256:8dbeef31a2343c8342c9b679772c3d005b4801c587cf2f525f98f57ec2f607f1"},
 ]
 
 [package.extras]
@@ -246,13 +246,13 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fastapi"
-version = "0.115.7"
+version = "0.115.8"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "fastapi-0.115.7-py3-none-any.whl", hash = "sha256:eb6a8c8bf7f26009e8147111ff15b5177a0e19bb4a45bc3486ab14804539d21e"},
-    {file = "fastapi-0.115.7.tar.gz", hash = "sha256:0f106da6c01d88a6786b3248fb4d7a940d071f6f488488898ad5d354b25ed015"},
+    {file = "fastapi-0.115.8-py3-none-any.whl", hash = "sha256:753a96dd7e036b34eeef8babdfcfe3f28ff79648f86551eb36bfc1b0bf4a8cbf"},
+    {file = "fastapi-0.115.8.tar.gz", hash = "sha256:0ce9111231720190473e222cdf0f07f7206ad7e53ea02beb1d2dc36e2f0741e9"},
 ]
 
 [package.dependencies]
@@ -642,4 +642,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10,<4.0"
-content-hash = "470fd2b7450b03d6264e8e5198d113ae4797bac1f15e3c3683a56ca403fc6caf"
+content-hash = "e2e94e8ad3d41b92499d6098d35b7446c54c938aac748a0f5a18cecf79c6c0c4"
