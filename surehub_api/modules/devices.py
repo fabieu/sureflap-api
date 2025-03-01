@@ -3,10 +3,10 @@ from typing import List
 
 import requests
 from fastapi import HTTPException
-
 from surehub_api.config import settings
 from surehub_api.models import surehub
 from surehub_api.models.custom import LockMode
+from surehub_api.models.surehub import SpecialProfile
 from surehub_api.modules import auth
 
 
@@ -91,7 +91,11 @@ def get_tag_of_device(device_id: int, tag_id: int) -> surehub.Tag:
 def assign_tag_to_device(device_id: int, tag_id: int) -> surehub.Tag:
     uri = f"{settings.ENDPOINT}/api/device/{device_id}/tag/{tag_id}"
 
-    response = requests.put(uri, headers=auth.auth_headers())
+    data = {
+        "profile": SpecialProfile.SPECIAL_PROFILE_0  # It is currently not known what this is for
+    }
+
+    response = requests.put(uri, headers=auth.auth_headers(), json=data)
 
     if response.ok:
         data = json.loads(response.text)

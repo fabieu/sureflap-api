@@ -16,8 +16,19 @@ class DeviceType(int, Enum):
     UNKNOWN_DEVICE_6 = 6
     UNKNOWN_DEVICE_7 = 7
     UNKNOWN_DEVICE_8 = 8
+    UNKNOWN_DEVICE_10 = 10
     UNKNOWN_DEVICE_32 = 32
     UNKNOWN_DEVICE_255 = 255
+
+# TODO: Add descriptive names to numeric special profiles
+class SpecialProfile(int, Enum):
+    SPECIAL_PROFILE_0 = 0
+    SPECIAL_PROFILE_1 = 1
+    SPECIAL_PROFILE_2 = 2
+    SPECIAL_PROFILE_3 = 3
+    SPECIAL_PROFILE_4 = 4
+    SPECIAL_PROFILE_5 = 5
+    SPECIAL_PROFILE_6 = 6
 
 
 class Tag(BaseModel):
