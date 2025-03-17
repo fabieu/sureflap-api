@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   surehub-api:
     image: fabieu/sureflap-api:latest
