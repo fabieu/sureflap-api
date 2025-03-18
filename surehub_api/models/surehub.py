@@ -5,20 +5,21 @@ from typing import Optional, List
 from pydantic import BaseModel
 
 
-# TODO: Add descriptive names to numeric device types
 class DeviceType(int, Enum):
     UNKNOWN_DEVICE_0 = 0
-    UNKNOWN_DEVICE_1 = 1
-    UNKNOWN_DEVICE_2 = 2
-    UNKNOWN_DEVICE_3 = 3
-    UNKNOWN_DEVICE_4 = 4
-    UNKNOWN_DEVICE_5 = 5
-    UNKNOWN_DEVICE_6 = 6
-    UNKNOWN_DEVICE_7 = 7
-    UNKNOWN_DEVICE_8 = 8
-    UNKNOWN_DEVICE_10 = 10
-    UNKNOWN_DEVICE_32 = 32
+    HUB = 1
+    REPEATER = 2
+    PET_DOOR_CONNECT = 3
+    MICROCHIP_PET_FEEDER_CONNECT = 4
+    PROGRAMMER = 5
+    CAT_FLAP_CONNECT = 6
+    FEEDER_LITE = 7
+    FELAQUA_CONNECT = 8
+    DUALSCAN_CAT_FLAP_CONNECT = 9
+    JANUS = 10
+    CERBERUS = 32
     UNKNOWN_DEVICE_255 = 255
+
 
 # TODO: Add descriptive names to numeric special profiles
 class SpecialProfile(int, Enum):
@@ -182,11 +183,10 @@ class HouseholdInviteUser(BaseModel):
     acceptor: Optional[PublicUser] = None
 
 
-# TODO: Add descriptive names to numeric household invite statuses
 class HouseholdInviteStatus(int, Enum):
-    STATUS_0 = 0
-    STATUS_1 = 1
-    STATUS_2 = 2
+    PENDING = 0
+    ACCEPTED = 1
+    EXPIRED = 2
 
 
 class HouseholdInvite(BaseModel):
