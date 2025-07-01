@@ -9,7 +9,7 @@ keywords = ["SureHub", "Sure Petcare", "REST", "API"]
 
 [tool.poetry.dependencies]
 python = "~=3.10"
-cachetools = "~=5.5"
+cachetools = "~=6.1"
 fastapi = "~=0.115"
 uvicorn = "~=0.34"
 requests = "~=2.32"
