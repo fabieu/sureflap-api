@@ -10,11 +10,16 @@ updates:
     assignees:
       - "fabieu"
     groups:
-      pip-dependencies:
-        patterns: [ "*" ]
+      major-updates:
+        update-types:
+          - "major"
+      minor-updates:
         update-types:
           - "minor"
           - "patch"
+      other-updates:
+        patterns:
+          - "*"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
